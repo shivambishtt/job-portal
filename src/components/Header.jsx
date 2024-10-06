@@ -10,13 +10,13 @@ function Header() {
         <Link>
           <img src="/logo.png" alt="" className='h-20' />
         </Link>
-        <SignedOut>
+        <Button variant="outline">Login</Button>
+        {/* <SignedOut>
         <SignInButton/>
       </SignedOut>
       <SignedIn>
         <UserButton/>
-      </SignedIn>
-        {/* <Button variant="outline">Login</Button> */}
+      </SignedIn> */}
       </nav>
     </>
 
