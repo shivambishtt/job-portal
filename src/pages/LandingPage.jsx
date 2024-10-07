@@ -3,6 +3,10 @@ import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { Link } from 'react-router-dom'
 import companies from "../data/companies.js"
+import Autoplay from 'embla-carousel-autoplay'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx'
+import faq from "../data/faq.js"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
 function LandingPage() {
   return (
@@ -45,7 +49,8 @@ function LandingPage() {
       </div>
 
       <Carousel
-        plugins={[    
+        plugins={[
+          Autoplay({ delay: 1000, stopOnInteraction: true })
         ]}
         className="w-full py-10"
       >
@@ -62,11 +67,38 @@ function LandingPage() {
         </CarouselContent>
       </Carousel>
 
-      {/* banner */}
-      <section>
-        {/* cards */}
+      <img src="/banner.jpeg" className='w-full' alt="" />
+
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4 ">
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-bold">For Job Seekers</CardTitle>
+          </CardHeader>
+          <CardContent>
+            Search and apply for jobs, track applications, and more.
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-bold">For Employers</CardTitle>
+          </CardHeader>
+          <CardContent>
+            Post jobs, manage applications, and find the best candidates.
+          </CardContent>
+        </Card>
       </section>
-      {/* accordion */}
+
+      <Accordion type="multiple" className="w-full">
+        {faq.map((faq, index) => (
+          <AccordionItem key={index} value={`item-${index + 1}`}>
+            <AccordionTrigger>{faq.question}</AccordionTrigger>
+            <AccordionContent>{faq.answer}</AccordionContent>
+
+          </AccordionItem>
+        ))}
+      </Accordion>
+
+
     </main>
   )
 }
