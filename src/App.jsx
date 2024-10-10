@@ -9,6 +9,7 @@ import MyJobs from './pages/MyJobs';
 import SavedJobs from './pages/SavedJobs';
 import JobPage from './pages/JobPage';
 import { ThemeProvider } from './components/ThemeProvider';
+import ProtectedRoute from './components/ProtectedRoutes';
 
 const router = createBrowserRouter([
   {
@@ -21,42 +22,55 @@ const router = createBrowserRouter([
       {
         path: "/onboarding",
         element: (
-          <OnBoarding />
+          <ProtectedRoute>
+            <OnBoarding/>
+          </ProtectedRoute>
         ),
       },
       {
         path: "/jobs",
         element: (
-          <JobListing />
+          <ProtectedRoute>
+            <JobListing />
+          </ProtectedRoute>
         ),
       },
       {
         path: "/post-job",
         element: (
-          <PostJob />
+          <ProtectedRoute>
+            <PostJob />
+          </ProtectedRoute>
         ),
       },
       {
         path: "/my-jobs",
         element: (
-          <MyJobs />
+          <ProtectedRoute>
+            <MyJobs />
+          </ProtectedRoute>
         ),
       },
       {
         path: "/saved-jobs",
         element: (
-          <SavedJobs />
+          <ProtectedRoute>
+            <SavedJobs />
+          </ProtectedRoute>
         ),
       },
       {
         path: "/job/:id",
         element: (
-          <JobPage />
+          <ProtectedRoute>
+            <JobPage />
+          </ProtectedRoute>
         ),
       },
     ],
   },
 ]);
+
 function App() {
   return (
     <ThemeProvider defaultTheme='dark' storageKey='vite-ul-theme'>
