@@ -54,6 +54,7 @@ const Header = () => {
                                 </Button>
                             </Link>
                         )}
+
                         <UserButton
                             appearance={{
                                 elements: {
