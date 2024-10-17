@@ -1,15 +1,13 @@
 import supabaseClient from "@/utils/supabase";
 
 export async function getJobs(supabaseAccessToken) {
-  
   const supabase = await supabaseClient(supabaseAccessToken);
 
   // specifies the table name/ endpoint to hit to connect
   let query = supabase.from("jobs").select("*");
-  console.log(query);
+  // console.log(query);
 
   const { data, error } = await query;
-
   if (error) {
     console.error("Error fetching the jobs", error);
     return null;
