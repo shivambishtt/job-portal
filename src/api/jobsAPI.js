@@ -6,7 +6,11 @@ export async function getJobs(
 ) {
   const supabase = await supabaseClient(supabaseAccessToken);
 
-  let query = supabase.from("jobs").select("*");
+  let query = supabase
+    .from("jobs")
+    .select(
+      "* ,company:companies(companyName, companyLogoURL),savedJobs:savedJobs(jobId)"
+    );
   if (location) {
     query = query.eq("location", location);
   }

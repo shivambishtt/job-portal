@@ -27,9 +27,7 @@ function OnBoarding() {
     }
   }, [user])
 
-  if (!isLoaded) {
-    return <BarLoader className='mb-4' height={5} width={"100%"} color='#df1b1b' />
-  }
+
 
 
 
