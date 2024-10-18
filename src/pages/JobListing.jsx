@@ -1,21 +1,15 @@
 import React, { useEffect } from 'react'
 import { getJobs } from "../api/jobsAPI.js"
-import { useSession } from "@clerk/clerk-react"
+import useFetch from '@/hooks/useFetch.js'
 function JobListing() {
-  const { session } = useSession()
 
+  const { fun: jobsFun, data: jobsData, loading: jobsLoading, session } = useFetch(getJobs, {})
 
-  const fetchJobs = async () => {
-    const supabaseAccessToken = await session?.getToken({ template: "supabase" })
-    console.log(supabaseAccessToken, "supabase access token");
-
-    const data = await getJobs(supabaseAccessToken)
-    console.log(data, "data");
-  }
+  console.log(jobsData, "jobs data");
 
   useEffect(() => {
-    fetchJobs()
-  }, [session]) // this is a fix
+    jobsFun()
+  }, [session])
 
   return (
     <div>
