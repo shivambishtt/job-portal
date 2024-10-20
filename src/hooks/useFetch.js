@@ -5,12 +5,8 @@ const useFetch = (callback, options = {}) => {
   const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
-  // console.log(data, "data");
-  // console.log(loading, "loading");
-  // console.log(error, "error");
 
   const { session } = useSession();
-  console.log(session, "session");
 
   const fun = async (...args) => {
     setLoading(true);
@@ -21,11 +17,9 @@ const useFetch = (callback, options = {}) => {
         template: "supabase",
       });
 
-      console.log(supabaseAccessToken, "supabaseAccessToken");
-
       const response = await callback(
         supabaseAccessToken,
-        session,
+        // session, // this was causing the issue
         options,
         ...args
       );

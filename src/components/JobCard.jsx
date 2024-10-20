@@ -15,13 +15,16 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
     const handleSavedJob = async () => {
         await savedJobsFun({
             user_id: user.id,
-            job_id: job.jobId,
+            jobId: job.jobId,
         })
+        console.log(saveJobs, "saveJobs");
         onJobSaved()
     }
+
     useEffect(() => {
         if (saveJobs !== undefined) setSaved(saveJobs?.length > 0) //edit
-    })
+    }), [saveJobs]
+
     return (
 
         <Card>

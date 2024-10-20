@@ -29,6 +29,7 @@ export async function getJobs(
   return data;
 }
 
+// save jobs data
 export async function savedJobs(
   supabaseAccessToken,
   savedJobData,
@@ -40,12 +41,13 @@ export async function savedJobs(
       .from("savedJobs")
       .delete()
       .eq("jobId", savedJobData.jobId);
-    console.log(savedJobData, "saved job data");
-
+    console.log(data,"data");
+    
     if (error) {
       console.error("Error deleting Saved Jobs:", error);
       return null;
     }
+
     return data;
   } else {
     const { data, error } = await supabase
@@ -54,7 +56,7 @@ export async function savedJobs(
       .select();
     if (error) {
       console.error("Error inserting the Jobs", error);
-      return data;
+      return null;
     }
     return data;
   }
