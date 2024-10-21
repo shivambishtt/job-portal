@@ -10,7 +10,7 @@ function JobListing() {
   const [location, setLocation] = useState("")
   const [companyId, setCompanyId] = useState("")
 
-  const { fun: jobsFun, data: jobs, loading: jobsLoading, session } = useFetch(getJobs, {
+  const { fun: jobsFun, data: jobs, loading: jobsLoading } = useFetch(getJobs, {
     location,
     companyId,
     searchQuery
@@ -40,7 +40,7 @@ function JobListing() {
         <div className='mt-10 grid md:grid-cols-2 lg:grid-cols-2 gap-4 '>
           {jobs?.length ? (
             jobs.map((job) => {
-              return <JobCard key={job.id} job={job} savedInit={job?.saved?.length > 0} />
+              return <JobCard key={job.id} job={job} savedInit={job?.savedJobs?.length > 0} />
             })
           ) :
             <div>No Jobs Found</div>

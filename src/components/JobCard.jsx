@@ -9,21 +9,22 @@ import useFetch from '@/hooks/useFetch'
 
 function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => { } }) {
     const [saved, setSaved] = useState(savedInit)
-    const { fun: savedJobsFun, data: saveJobs, loading: savedJobsLoading, session } = useFetch(savedJobs)
+    const { fun: savedJobsFun, data: saveJobs, loading: savedJobsLoading } = useFetch(savedJobs)
     const { user } = useUser()
 
     const handleSavedJob = async () => {
+
         await savedJobsFun({
-            user_id: user.id,
+            user_id: user.user_id,
             jobId: job.jobId,
         })
-        console.log(saveJobs, "saveJobs");
+        console.log(saveJobs, "saveJobs ");
         onJobSaved()
     }
 
     useEffect(() => {
         if (saveJobs !== undefined) setSaved(saveJobs?.length > 0) //edit
-    }), [saveJobs]
+    }, [saveJobs])
 
     return (
 

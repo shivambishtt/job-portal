@@ -36,18 +36,19 @@ export async function savedJobs(
   { alreadySaved }
 ) {
   const supabase = await supabaseClient(supabaseAccessToken);
+  console.log(savedJobData, "Saved Jobs");
+
   if (alreadySaved) {
     const { data, error } = await supabase
       .from("savedJobs")
       .delete()
       .eq("jobId", savedJobData.jobId);
-    console.log(data,"data");
-    
+    console.log(data, "data");
+
     if (error) {
       console.error("Error deleting Saved Jobs:", error);
       return null;
     }
-
     return data;
   } else {
     const { data, error } = await supabase
