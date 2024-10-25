@@ -11,11 +11,7 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
     const [saved, setSaved] = useState(savedInit)
     const { fun: savedJobsFun, data: saveJobs, loading: savedJobsLoading } = useFetch(savedJobs)
     const { user } = useUser()
-    console.log(user.id);
-    console.log(job);
-    
 
-    console.log(saveJobs);
 
     const handleSavedJob = async () => {
         try {
@@ -23,6 +19,10 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
                 user_id: user.id,
                 job_id: job.id,
             })
+            if (job.job_id === null) {
+                console.log("It is null");
+
+            }
             onJobSaved()
         }
         catch (error) {

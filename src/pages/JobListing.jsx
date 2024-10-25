@@ -4,6 +4,7 @@ import useFetch from '@/hooks/useFetch.js'
 import { useUser } from '@clerk/clerk-react'
 import { BarLoader } from 'react-spinners'
 import JobCard from '@/components/JobCard.jsx'
+import { fetchCompanies } from '@/api/companiesAPI.js'
 function JobListing() {
   const { isLoaded } = useUser()
   const [searchQuery, setSearchQuery] = useState("")
@@ -15,8 +16,15 @@ function JobListing() {
     companyId,
     searchQuery
   })
+  const { fun: companyFun, data: companyData } = useFetch(fetchCompanies)
 
+  useEffect(() => {
+    if (isLoaded) companyFun()
+  }, [isLoaded])
 
+  useEffect(() => {
+    companyFun()
+  }, [])
   useEffect(() => {
     if (isLoaded) {
       jobsFun()
