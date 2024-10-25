@@ -32,6 +32,6 @@ const useFetch = (callback, options = {}) => {
     }
   };
 
-  return { fun, data, error, loading, session };
+  return { fun, data, error, loading };
 };
 export default useFetch;

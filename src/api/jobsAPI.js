@@ -1,15 +1,12 @@
 import supabaseClient from "@/utils/supabase";
 
-export async function getJobs(
-  supabaseAccessToken,
-  { location, companyId, searchQuery }
-) {
+export async function getJobs(supabaseAccessToken,{ location, companyId, searchQuery }) {
   const supabase = await supabaseClient(supabaseAccessToken);
 
   let query = supabase
     .from("jobs")
     .select(
-      "* ,company:companies(companyName, companyLogoURL),savedJobs:savedJobs(jobId)"
+      "* ,company:companies(companyName, companyLogoURL),savedJobs:savedJobs(job_id)"
     );
   if (location) {
     query = query.eq("location", location);
@@ -30,35 +27,34 @@ export async function getJobs(
 }
 
 // save jobs data
-export async function savedJobs(
-  supabaseAccessToken,
-  savedJobData,
-  { alreadySaved }
-) {
+
+
+export async function savedJobs(supabaseAccessToken,savedJobData,{ alreadySaved }) {
   const supabase = await supabaseClient(supabaseAccessToken);
-  console.log(savedJobData, "Saved Jobs");
 
   if (alreadySaved) {
     const { data, error } = await supabase
       .from("savedJobs")
       .delete()
-      .eq("jobId", savedJobData.jobId);
-    console.log(data, "data");
+      .eq("job_id", savedJobData.job_id);
 
     if (error) {
       console.error("Error deleting Saved Jobs:", error);
       return null;
     }
-    return data;
+    return data 
   } else {
+    console.log("savedJobData before insert:", savedJobData);
     const { data, error } = await supabase
       .from("savedJobs")
       .insert([savedJobData])
       .select();
     if (error) {
-      console.error("Error inserting the Jobs", error);
+      console.error("Error inserting the Jobs", error.message);
       return null;
     }
-    return data;
+    return data
+
   }
+  
 }

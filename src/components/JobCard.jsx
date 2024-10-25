@@ -11,15 +11,25 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
     const [saved, setSaved] = useState(savedInit)
     const { fun: savedJobsFun, data: saveJobs, loading: savedJobsLoading } = useFetch(savedJobs)
     const { user } = useUser()
+    console.log(user.id);
+    console.log(job);
+    
+
+    console.log(saveJobs);
 
     const handleSavedJob = async () => {
+        try {
+            await savedJobsFun({
+                user_id: user.id,
+                job_id: job.id,
+            })
+            onJobSaved()
+        }
+        catch (error) {
+            console.log("Error occured while executing the savedJobsFun");
 
-        await savedJobsFun({
-            user_id: user.user_id,
-            jobId: job.jobId,
-        })
-        console.log(saveJobs, "saveJobs ");
-        onJobSaved()
+        }
+
     }
 
     useEffect(() => {
