@@ -15,7 +15,7 @@ export async function getJobs(supabaseAccessToken,{ location, companyId, searchQ
     query = query.eq("companyId", companyId);
   }
   if (searchQuery) {
-    query = query.ilike("title", `%${searchQuery}%`);
+    query = query.ilike("jobTitle", `%${searchQuery}%`);
   }
 
   const { data, error } = await query;

@@ -1,9 +1,7 @@
 import supabaseClient from "@/utils/supabase";
 
 export async function fetchCompanies(supabaseAccessToken,){
-    const supabase= await supabaseClient(supabaseAccessToken)
-    console.log(supabaseAccessToken);
-    
+    const supabase= await supabaseClient(supabaseAccessToken)    
 
     const {data,error}= await supabase.from("companies").select("*")
 
