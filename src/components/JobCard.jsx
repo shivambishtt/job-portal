@@ -38,7 +38,7 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
 
     return (
 
-        <Card>
+        <Card className="flex flex-col">
             <CardHeader>
                 <CardTitle className="flex justify-between font-bold">{job.jobTitle}
                     {!isMyJob && <Trash2Icon className='cursor-pointer text-red-300' fill='red' size={20} />}
@@ -47,7 +47,7 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
 
             <CardContent className="flex flex-col gap-4 flex-1" >
                 <div className='flex justify-between' >
-                    {job.company && <img className='h-16' src={job.company.companyLogoURL} />}
+                    {job.company && <img className=' flex items-center h-12' src={job.company.companyLogoURL} />}
                     <div className='flex gap-2 items-center'>
                         <MapPinIcon className='mt-2' size={15} />{job.jobLocation}
                     </div>

@@ -9,7 +9,7 @@ export async function getJobs(supabaseAccessToken,{ location, companyId, searchQ
       "* ,company:companies(companyName, companyLogoURL),savedJobs:savedJobs(job_id)"
     );
   if (location) {
-    query = query.eq("location", location);
+    query = query.eq("jobLocation", location);
   }
   if (companyId) {
     query = query.eq("companyId", companyId);

@@ -7,6 +7,9 @@ import JobCard from '@/components/JobCard.jsx'
 import { fetchCompanies } from '@/api/companiesAPI.js'
 import { Input } from '@/components/ui/input.jsx'
 import { Button } from '@/components/ui/button.jsx'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select.jsx'
+import { State } from 'country-state-city'
+
 function JobListing() {
   const { isLoaded } = useUser()
   const [searchQuery, setSearchQuery] = useState("")
@@ -19,6 +22,22 @@ function JobListing() {
     searchQuery
   })
   const { fun: companyFun, data: companyData } = useFetch(fetchCompanies)
+
+  const handleSearch = (event) => {
+    event.preventDefault()
+    let formData = new FormData(event.target)
+
+    const query = formData.get("search-query")
+    if (query) {
+      setSearchQuery(query)
+    }
+  }
+
+  const handleClearFilters = () => {
+    setLocation("")
+    setCompanyId("")
+    setSearchQuery("")
+  }
 
   useEffect(() => {
     if (isLoaded) companyFun()
@@ -34,18 +53,6 @@ function JobListing() {
   }, [isLoaded, location, companyId, searchQuery])
 
 
-  const handleSearch = (event) => {
-    event.preventDefault()
-    console.log("clicked");
-
-    let formData = new FormData(event.target)
-    console.log(formData);
-
-    const query = formData.get("search-query")
-    if (query) {
-      setSearchQuery(query)
-    }
-  }
 
   if (!isLoaded) {
     return <BarLoader className='mb-4' width={"100%"} color='#36d7b7' />
@@ -68,6 +75,43 @@ function JobListing() {
 
         <Button type="submit" className="h-full sm:w-28" variant="blue">Search</Button>
       </form>
+
+      <div className='flex flex-col sm:flex-row gap-2' >
+        <Select value={location} onValueChange={(value) => setLocation(value)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select location" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {State.getStatesOfCountry("IN").map(({ name, countryCode }) => {
+                return <SelectItem key={name} value={name}>{name} </SelectItem>
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <Select value={companyId} onValueChange={(id) => setCompanyId(id)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Filter by Company" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {companyData?.map((company) => {
+                return <SelectItem key={company.id} value={company.id} >
+                  {company.companyName}
+                </SelectItem>
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Button
+          className="sm:w-1/2"
+          onClick={handleClearFilters}
+          variant="destructive"
+        >
+          Clear Filters
+        </Button>
+      </div>
 
       {jobsLoading && (
         <BarLoader className="mt-4" width={"100%"} color="#36d7b7" />
