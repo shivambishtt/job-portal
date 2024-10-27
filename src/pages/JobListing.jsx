@@ -9,6 +9,8 @@ import { Input } from '@/components/ui/input.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select.jsx'
 import { State } from 'country-state-city'
+// import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination.jsx'
+// import { Link } from 'react-router-dom'
 
 function JobListing() {
   const { isLoaded } = useUser()
@@ -38,6 +40,7 @@ function JobListing() {
     setCompanyId("")
     setSearchQuery("")
   }
+
 
   useEffect(() => {
     if (isLoaded) companyFun()
@@ -113,21 +116,25 @@ function JobListing() {
         </Button>
       </div>
 
-      {jobsLoading && (
-        <BarLoader className="mt-4" width={"100%"} color="#36d7b7" />
-      )}
 
-      {jobsLoading === false && (
-        <div className='mt-10 grid md:grid-cols-2 lg:grid-cols-2 gap-4 '>
-          {jobs?.length ? (
-            jobs.map((job) => {
-              return <JobCard key={job.id} job={job} savedInit={job?.savedJobs?.length > 0} />
-            })
-          ) :
-            <div>No Jobs Found</div>
-          }
-        </div>
-      )
+      {
+        jobsLoading && (
+          <BarLoader className="mt-4" width={"100%"} color="#36d7b7" />
+        )
+      }
+
+      {
+        jobsLoading === false && (
+          <div className='mt-10 grid md:grid-cols-2 lg:grid-cols-2 gap-4 '>
+            {jobs?.length ? (
+              jobs.map((job) => {
+                return <JobCard key={job.id} job={job} savedInit={job?.savedJobs?.length > 0} />
+              })
+            ) :
+              <div>No Jobs Found</div>
+            }
+          </div>
+        )
       }
     </div >
   )
