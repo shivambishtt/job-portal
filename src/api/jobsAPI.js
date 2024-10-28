@@ -62,7 +62,8 @@ export async function savedJobs(supabaseAccessToken,savedJobData,{ alreadySaved 
 export async function getSingleJob(supabaseAccessToken,{job_id}){
   const supabase = await supabaseClient(supabaseAccessToken)    
   const {data,error} = await supabase.from("jobs")
-  .select("*,company:companies(companyName,companyLogoURL),applications:applications(*)")
+  .select("*,company:companies(companyName,companyLogoURL)applications:applications(*)")
+  
   .eq("id",job_id)
   .single()
  
