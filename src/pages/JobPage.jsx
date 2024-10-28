@@ -38,7 +38,7 @@ function JobPage() {
           {jobData?.jobLocation}
         </div>
         <div className='flex gap-2' >
-          {/* <Briefcase />{jobData?.applications?.length}Applicants */}
+          <Briefcase />{jobData?.applications?.length}Applicants
         </div>
       </div>
     </div>
