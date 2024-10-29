@@ -72,4 +72,15 @@ export async function getSingleJob(supabaseAccessToken,{job_id}){
   }
 return data  
  }
+ export async function updateHiringStatus(supabaseAccessToken,{job_id},jobStatus){
+  const supabase = await supabaseClient(supabaseAccessToken)
+  const {data,error} = await supabase.from("jobs")
+  .update({jobStatus})
+  .eq("id",job_id)
+  .select()
+  if(error){
+    console.error("Error updating the job", error);
+  }
+  return data
+ }
  

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getJobs } from "../api/jobsAPI.js"
+import { getJobs, updateHiringStatus } from "../api/jobsAPI.js"
 import useFetch from '@/hooks/useFetch.js'
 import { useUser } from '@clerk/clerk-react'
 import { BarLoader } from 'react-spinners'
@@ -33,7 +33,7 @@ function JobListing() {
     if (query) {
       setSearchQuery(query)
     }
-  }
+  } 
 
   const handleClearFilters = () => {
     setLocation("")
@@ -49,13 +49,16 @@ function JobListing() {
   useEffect(() => {
     companyFun()
   }, [])
+
   useEffect(() => {
     if (isLoaded) {
       jobsFun()
     }
   }, [isLoaded, location, companyId, searchQuery])
 
+  useEffect(() => {
 
+  })
 
   if (!isLoaded) {
     return <BarLoader className='mb-4' width={"100%"} color='#36d7b7' />
