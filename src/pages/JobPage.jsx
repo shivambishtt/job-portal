@@ -18,17 +18,14 @@ function JobPage() {
     job_id: id
   })
 
-  const { fun: updateJobStatus, data: updatedData, loading: isLoading } = useFetch(updateHiringStatus, {
+  const { fun: updateJobStatus, loading: isLoading } = useFetch(updateHiringStatus, {
     job_id: id
   })
 
   const handleStatusChange = (value) => {
     const jobStatus = value === "open"
-    updateJobStatus(jobStatus).then(() => {
-      jobIdFun()
-    })
+    updateJobStatus(jobStatus).then(() => jobIdFun())
   }
-
 
   useEffect(() => {
     if (isLoaded) {
@@ -36,7 +33,7 @@ function JobPage() {
     }
   }, [isLoaded])
 
-  if (!isLoaded || !user) {
+  if (!isLoaded || isJobLoading) {
     return <BarLoader className='mb-4' width={"100%"} color='#36d7b7' />
   }
 
@@ -59,6 +56,7 @@ function JobPage() {
           {jobData?.jobStatus ? <><DoorOpen />Open </> : <><DoorClosed />Closed</>}
         </div>
       </div>
+
 
       {isLoading && <BarLoader width={"100%"} color='#36d7b7' />}
       {jobData?.recruiter_id === user?.id &&
