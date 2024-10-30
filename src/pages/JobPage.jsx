@@ -78,7 +78,8 @@ function JobPage() {
         What we are looking for
       </h2>
       <MDEditor.Markdown className='bg-transparent sm:text-lg' source={jobData?.jobRequirements} />
-
+      
+      {/* render applications */}
     </div>
 
   )
