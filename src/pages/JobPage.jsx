@@ -8,6 +8,7 @@ import { BarLoader } from 'react-spinners'
 import { Briefcase, DoorClosed, DoorOpen, MapPinIcon } from 'lucide-react'
 import MDEditor from '@uiw/react-md-editor'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@radix-ui/react-select'
+import ApplyJobs from '@/components/ApplyJobs'
 
 function JobPage() {
   const { isLoaded, user } = useUser()
@@ -80,6 +81,13 @@ function JobPage() {
       <MDEditor.Markdown className='bg-transparent sm:text-lg' source={jobData?.jobRequirements} />
       
       {/* render applications */}
+      {jobData?.recruiter_id !== user?.id && <ApplyJobs
+       job={job} 
+       user={user}
+        fetchJobFun={jobIdFun} 
+        applied={job?.applications.find((application)=>{
+        application.candidate_id === user?.id
+      })}/> }
     </div>
 
   )

@@ -1,4 +1,4 @@
-import supabaseClient from "@/utils/supabase";
+import supabaseClient, { supabaseUrl } from "@/utils/supabase";
 
 export async function applyForJob(supabaseAccessToken,_,jobData){
     const supabase= await supabaseClient(supabaseAccessToken)
@@ -13,11 +13,13 @@ export async function applyForJob(supabaseAccessToken,_,jobData){
     console.error("Error occured while uploading the resume",error);
    }
    
+   const resume = `${supabaseUrl}/storage/v1/object/public/resumes/${resumeId}`
+   
     const {data,error}= await supabase
     .from("applications")
     .insert([{
-        ...jobData
-    }])
+        ...jobData,resume
+    }]).select()
 
     if(error){
         console.error("Error occured while applying to the job",error);   
