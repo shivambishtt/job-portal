@@ -56,7 +56,6 @@ export async function savedJobs(supabaseAccessToken,savedJobData,{ alreadySaved 
     return data
 
   }
-  
 }
 
 export async function getSingleJob(supabaseAccessToken,{job_id}){

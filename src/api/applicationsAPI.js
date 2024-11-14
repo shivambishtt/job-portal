@@ -18,8 +18,10 @@ export async function applyForJob(supabaseAccessToken,_,jobData){
     const {data,error}= await supabase
     .from("applications")
     .insert([{
-        ...jobData,resume
-    }]).select()
+        ...jobData,
+        resume,
+    }]).
+    select();
 
     if(error){
         console.error("Error occured while applying to the job",error);   

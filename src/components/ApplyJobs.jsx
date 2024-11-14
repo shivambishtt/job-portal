@@ -1,8 +1,8 @@
 import React from 'react'
-import {Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from './ui/drawer'
+import {Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '../components/ui/drawer.jsx'
 import { Button } from './ui/button'
 
-function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
+function ApplyJobs({ user, job, fetchJobFun, applied = true }) {
   return (
     <Drawer>
       <DrawerTrigger>Open</DrawerTrigger>
@@ -12,7 +12,7 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
           <DrawerDescription>This action cannot be undone.</DrawerDescription>
         </DrawerHeader>
         <DrawerFooter>
-          <Button>Submit</Button>
+          <Button>Open</Button>
           <DrawerClose>
             <Button variant="outline">Cancel</Button>
           </DrawerClose>
