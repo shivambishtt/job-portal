@@ -83,7 +83,7 @@ function JobPage() {
       {/* render applications */}
       
       {/* kyunki recruiter jo hai wo apni post kari hui job pe thodi apply kar sakta hai */}
-      {jobData?.recruiter_id === user?.id &&
+      {String(jobData?.recruiter_id) === String(user?.id) &&
         <ApplyJobs
           job={jobData}
           user={user}

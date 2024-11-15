@@ -1,14 +1,20 @@
 import React from 'react'
-import {Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '../components/ui/drawer.jsx'
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '../components/ui/drawer.jsx'
 import { Button } from './ui/button'
 
-function ApplyJobs({ user, job, fetchJobFun, applied = true }) {
+//asChild extends something in the shadcn ui
+function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
   return (
-    <Drawer>
-      <DrawerTrigger>Open</DrawerTrigger>
+    <Drawer open={applied ? false : undefined} >
+      <DrawerTrigger asChild> 
+        <Button
+          variant={job?.jobStatus && !applied ? "blue" : "destructive"}
+          disabled={!job?.jobStatus || applied}
+        >{job?.jobStatus ? (applied ? "Applied" : "Apply") : "Hiring Closed"}</Button>
+      </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Are you absolutely sure?</DrawerTitle>
+          <DrawerTitle>Apply for {job?.jobTitle} at {job?.company?.companyName}</DrawerTitle>
           <DrawerDescription>This action cannot be undone.</DrawerDescription>
         </DrawerHeader>
         <DrawerFooter>
