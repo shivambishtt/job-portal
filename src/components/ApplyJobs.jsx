@@ -17,18 +17,18 @@ const schema = z.object({
   skills: z.string().min(1, { message: "Skills are required" }),
   education: z.enum(["Intermediate", "Graduate", "Post-Graduate"], { message: "Education is required" }),
   resume: z.any().refine((file) => {
-    file[0] && (file[0].type === "application/pdf" || file[0].type === "application/msword"), { message: "Only PDF or Word documents are allowed" }
+    return file[0] && (file[0].type === "application/pdf" || file[0].type === "application/msword"), { message: "Only PDF or Word documents are allowed" }
   })
 })
 function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
   const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
     resolver: zodResolver(schema),
   })
-  const { loading: loadingApply,
-    error: errorApply,
-    fn: fnApply,
-  } = useFetch(applyForJob)
-  const onSubmit= (data)=>{
+  const { loading: loadingApply, error: errorApply, fun: fnApply } = useFetch(applyForJob)
+    
+  const onSubmit = (data) => {
+    console.log(data,"data");
+    
     fnApply({
       ...data,
       job_id: job.id,
@@ -36,8 +36,8 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
       name: user.fullName,
       status: "applied",
       resume: data.resume[0],
-    }).then(()=>{
-      fetchJobFun()
+    }).then(() => {
+      fetchJobFun();
       reset()
     })
   }
@@ -72,7 +72,7 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
             placeholder="Skills (Comma Separated)"
             {...register("skills")}
           />
-          
+
           {errors.skills &&
             (<p className='text-red-500'>{errors.skills.message}</p>)}
 
@@ -116,7 +116,7 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
           {errorApply?.message && (
             <p className='text-red-500'>{errorApply?.message}</p>
           )}
-          {loadingApply && <BarLoader width={"100%"} color='#36d7b7'/>}
+          {loadingApply && <BarLoader width={"100%"} color='#36d7b7' />}
           <Button
             type="submit"
             variant="blue"
