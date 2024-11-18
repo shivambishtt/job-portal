@@ -27,7 +27,6 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
   const { loading: loadingApply, error: errorApply, fun: fnApply } = useFetch(applyForJob)
     
   const onSubmit = (data) => {
-    console.log(data,"data");
     
     fnApply({
       ...data,
