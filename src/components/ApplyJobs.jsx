@@ -95,7 +95,7 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
                 </div>
 
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="Post Graduate" id="post-graduate" />
+                  <RadioGroupItem value="Post-Graduate" id="post-graduate" />
                   <Label htmlFor="post-graduate">Post Graduate</Label>
                 </div>
               </RadioGroup>
