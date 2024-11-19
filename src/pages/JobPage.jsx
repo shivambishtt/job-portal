@@ -14,10 +14,11 @@ function JobPage() {
   const { isLoaded, user } = useUser()
 
   const { id } = useParams()
-
+  
   const { fun: jobIdFun, data: jobData, loading: isJobLoading } = useFetch(getSingleJob, {
     job_id: id
   })
+console.log(jobData,"job data");
 
   const { fun: updateJobStatus, loading: isLoading } = useFetch(updateHiringStatus, {
     job_id: id
@@ -27,7 +28,7 @@ function JobPage() {
     const jobStatus = value === "open"
     updateJobStatus(jobStatus).then(() => jobIdFun())
   }
-
+  
   useEffect(() => {
     if (isLoaded) {
       jobIdFun()
