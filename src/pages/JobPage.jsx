@@ -9,11 +9,12 @@ import { Briefcase, DoorClosed, DoorOpen, MapPinIcon } from 'lucide-react'
 import MDEditor from '@uiw/react-md-editor'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@radix-ui/react-select'
 import ApplyJobs from "../components/ApplyJobs.jsx"
+import ApplicationCard from '@/components/ApplicationCard.jsx'
 
 function JobPage() {
   const { isLoaded, user } = useUser()
   const { id } = useParams()
-  
+
   const { fun: jobIdFun, data: jobData, loading: isJobLoading } = useFetch(getSingleJob, {
     job_id: id
   })
@@ -26,7 +27,7 @@ function JobPage() {
     const jobStatus = value === "open"
     updateJobStatus(jobStatus).then(() => jobIdFun())
   }
-  
+
   useEffect(() => {
     if (isLoaded) {
       jobIdFun()
@@ -80,8 +81,7 @@ function JobPage() {
       <MDEditor.Markdown className='bg-transparent sm:text-lg' source={jobData?.jobRequirements} />
 
       {/* render applications */}
-      
-      {/* kyunki recruiter jo hai wo apni post kari hui job pe thodi apply kar sakta hai */}
+
       {String(jobData?.recruiter_id) === String(user?.id) &&
         <ApplyJobs
           job={jobData}
@@ -90,6 +90,14 @@ function JobPage() {
           applied={jobData?.applications?.find((application) => {
             return application.candidate_id === user?.id
           })} />}
+      {jobData?.applications?.length > 0 && jobData?.recruiter_id === user?.id && (
+         <div className='flex flex-col gap-2'>
+          <h2 className='text-2xl sm:text-3xl font-bold' >Applications</h2>
+          {jobData?.applications.map((application)=>{
+            return <ApplicationCard key={application?.id} application={application}/>
+          })}
+         </div>
+      )}
     </div>
 
   )

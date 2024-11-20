@@ -25,9 +25,9 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
     resolver: zodResolver(schema),
   })
   const { loading: loadingApply, error: errorApply, fun: fnApply } = useFetch(applyForJob)
-    
+
   const onSubmit = (data) => {
-    
+
     fnApply({
       ...data,
       job_id: job.id,
@@ -45,7 +45,7 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
       <DrawerTrigger asChild>
         <Button
           variant={job?.jobStatus && !applied ? "blue" : "destructive"}
-          disabled={!job?.jobStatus || applied}
+          disabled={!job?.jobStatus || applied} //job not open
         >{job?.jobStatus ? (applied ? "Applied" : "Apply") : "Hiring Closed"}</Button>
       </DrawerTrigger>
       <DrawerContent>
