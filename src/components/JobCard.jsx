@@ -7,12 +7,12 @@ import { Button } from './ui/button'
 import { savedJobs } from '@/api/jobsAPI'
 import useFetch from '@/hooks/useFetch'
 
-function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => { } }) {
+function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => { } }) {    
     const [saved, setSaved] = useState(savedInit)
     const { fun: savedJobsFun, data: saveJobs, loading: savedJobsLoading } = useFetch(savedJobs)
     const { user } = useUser()
 
-
+    
     const handleSavedJob = async () => {
         try {
             await savedJobsFun({
@@ -29,9 +29,7 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
             console.log("Error occured while executing the savedJobsFun");
 
         }
-
     }
-
     useEffect(() => {
         if (saveJobs !== undefined) setSaved(saveJobs?.length > 0) //edit
     }, [saveJobs])
@@ -56,7 +54,7 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
                 {job.jobDescription}
             </CardContent>
             <CardFooter className="flex gap-2">
-                <Link to={`/job/${job.jobId}`} className="flex-1">
+                <Link to={`/job/${job.id}`} className="flex-1">
                     <Button variant="secondary" className="w-full">
                         More Details
                     </Button>

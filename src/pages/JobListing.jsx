@@ -33,7 +33,7 @@ function JobListing() {
     if (query) {
       setSearchQuery(query)
     }
-  } 
+  }
 
   const handleClearFilters = () => {
     setLocation("")

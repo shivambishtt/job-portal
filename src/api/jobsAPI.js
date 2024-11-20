@@ -58,7 +58,7 @@ export async function savedJobs(supabaseAccessToken,savedJobData,{ alreadySaved 
   }
 }
 
-export async function getSingleJob(supabaseAccessToken,{job_id}){  
+export async function getSingleJob(supabaseAccessToken,{job_id}){   
   const supabase = await supabaseClient(supabaseAccessToken)    
   const {data,error} = await supabase.from("jobs")
   .select("*, company: companies(companyName,companyLogoURL),applications:applications!applications_job_id_fkey(*)")
@@ -67,6 +67,7 @@ export async function getSingleJob(supabaseAccessToken,{job_id}){
   
   if(error){
      console.error("Error fetching the company", error);
+     return null
   }
   return data  
  }
