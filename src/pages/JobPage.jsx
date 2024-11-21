@@ -14,11 +14,11 @@ import ApplicationCard from '@/components/ApplicationCard.jsx'
 function JobPage() {
   const { isLoaded, user } = useUser()
   const { id } = useParams()
-
+    
   const { fun: jobIdFun, data: jobData, loading: isJobLoading } = useFetch(getSingleJob, {
     job_id: id
   })
-
+  
   const { fun: updateJobStatus, loading: isLoading } = useFetch(updateHiringStatus, {
     job_id: id
   })
@@ -59,7 +59,8 @@ function JobPage() {
       </div>
 
 
-      {isLoading && <BarLoader width={"100%"} color='#36d7b7' />}
+      {/* {isLoading && <BarLoader width={"100%"} color='#36d7b7' />} */}
+
       {jobData?.recruiter_id === user?.id &&
         <Select onValueChange={handleStatusChange}>
           <SelectTrigger
@@ -88,7 +89,7 @@ function JobPage() {
           user={user}
           fetchJobFun={jobIdFun}
           applied={jobData?.applications?.find((application) => {
-            return application.candidate_id === user?.id
+            return application?.candidate_id === user?.id
           })} />}
       {jobData?.applications?.length > 0 && jobData?.recruiter_id === user?.id && (
          <div className='flex flex-col gap-2'>
