@@ -29,3 +29,20 @@ export async function applyForJob(supabaseAccessToken,_,jobData){
     }
     return data
 }
+
+export async function updateApplication(supabaseAccessToken,{job_id},status){
+    const supabase = await supabaseClient(supabaseAccessToken)
+
+    const {data, error}= await supabase
+    .from("applications")
+    .update({status})
+    .eq("job_id",job_id)
+    select();
+
+    if(error || data.length === 0){
+        console.log("Error occured while updating the application",error);
+        return null  
+    }
+
+    return data
+}

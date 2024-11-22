@@ -14,7 +14,7 @@ import ApplicationCard from '@/components/ApplicationCard.jsx'
 function JobPage() {
   const { isLoaded, user } = useUser()
   const { id } = useParams()
-    
+  
   const { fun: jobIdFun, data: jobData, loading: isJobLoading } = useFetch(getSingleJob, {
     job_id: id
   })
@@ -59,8 +59,6 @@ function JobPage() {
       </div>
 
 
-      {/* {isLoading && <BarLoader width={"100%"} color='#36d7b7' />} */}
-
       {jobData?.recruiter_id === user?.id &&
         <Select onValueChange={handleStatusChange}>
           <SelectTrigger
@@ -79,11 +77,12 @@ function JobPage() {
       <h2 className='text-2xl sm:text-3xl font-bold'>
         What we are looking for
       </h2>
+      <h2>Posted by : {jobData?.recruiter_id}</h2>
       <MDEditor.Markdown className='bg-transparent sm:text-lg' source={jobData?.jobRequirements} />
 
       {/* render applications */}
 
-      {String(jobData?.recruiter_id) === String(user?.id) &&
+      {String(jobData?.recruiter_id) !== String(user?.id) &&
         <ApplyJobs
           job={jobData}
           user={user}
@@ -95,7 +94,9 @@ function JobPage() {
          <div className='flex flex-col gap-2'>
           <h2 className='text-2xl sm:text-3xl font-bold' >Applications</h2>
           {jobData?.applications.map((application)=>{
-            return <ApplicationCard key={application?.id} application={application}/>
+            return <ApplicationCard
+             key={application?.id} 
+             application={application}/>
           })}
          </div>
       )}

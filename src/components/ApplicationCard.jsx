@@ -2,8 +2,7 @@ import React from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Boxes, BriefcaseBusiness, Download, School } from 'lucide-react'
 
-function ApplicationCard({ application, isCandidate = false }) {
-    // simply ye function jo hai hume isey esa design karna hai ki ispe koi agar click kare to wo download hojaye
+function ApplicationCard({ application, isCandidate = false }) {   
     const handleDownload = () => {
         const link = document.createElement("a")
         link.href = application?.resume
@@ -39,8 +38,8 @@ function ApplicationCard({ application, isCandidate = false }) {
                 </div>
                 <hr />
             </CardContent>
-            <CardFooter>
-                <span>{new Date(application?.created_at).toLocaleString()}</span>
+            <CardFooter className="flex items-center justify-between">
+                <span>{new Date(application?.created_at).toLocaleString()}</span> 
                 {isCandidate? <span>Status: {application?.status}</span> : ""}
             </CardFooter>
         </Card>
