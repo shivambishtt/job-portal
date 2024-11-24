@@ -93,7 +93,7 @@ function JobPage() {
       {jobData?.applications?.length > 0 && jobData?.recruiter_id === user?.id && (
          <div className='flex flex-col gap-2'>
           <h2 className='text-2xl sm:text-3xl font-bold' >Applications</h2>
-          {jobData?.applications.map((application)=>{
+          {jobData?.applications.map((application)=>{  
             return <ApplicationCard
              key={application?.id} 
              application={application}/>

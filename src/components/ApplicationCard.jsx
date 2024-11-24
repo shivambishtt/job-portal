@@ -1,16 +1,27 @@
 import React from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Boxes, BriefcaseBusiness, Download, School } from 'lucide-react'
+import { BarLoader } from 'react-spinners'
+import useFetch from '@/hooks/useFetch'
+import { updateApplicationStatus } from '@/api/applicationsAPI'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
-function ApplicationCard({ application, isCandidate = false }) {   
+function ApplicationCard({ application, isCandidate = false }) {
     const handleDownload = () => {
         const link = document.createElement("a")
         link.href = application?.resume
         link.target = "_blank";
         link.click()
     }
+    const { loading: loadingHiringStatus, fun:funHiringStatus } = useFetch(updateApplicationStatus, { job_id: application?.job_id })
+
+    const handleStatusChange = (status) => {
+        funHiringStatus(status)
+    }
+
     return (
         <Card>
+            {loadingHiringStatus && <BarLoader width={"100%"} color='#36d7b7' />}
             <CardHeader>
                 <CardTitle className="flex justify-between">
                     {isCandidate ? `${application?.job?.jobTitle} at ${application?.job?.companyName}` : `${application?.name}`}
@@ -39,8 +50,20 @@ function ApplicationCard({ application, isCandidate = false }) {
                 <hr />
             </CardContent>
             <CardFooter className="flex items-center justify-between">
-                <span>{new Date(application?.created_at).toLocaleString()}</span> 
-                {isCandidate? <span>Status: {application?.status}</span> : ""}
+                <span>{new Date(application?.created_at).toLocaleString()}</span>
+
+                {isCandidate ? <span>Status: {application?.status}</span> :
+                    (<Select onValueChange={handleStatusChange} defaultValue={application?.status}>
+                        <SelectTrigger className="w-52">
+                            <SelectValue placeholder={"Application Status"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="applied">Applied </SelectItem>
+                            <SelectItem value="interviewing">Interviewing </SelectItem>
+                            <SelectItem value="hired">Hired </SelectItem>
+                            <SelectItem value="rejected">Rejected</SelectItem>
+                        </SelectContent>
+                    </Select>)}
             </CardFooter>
         </Card>
     )
