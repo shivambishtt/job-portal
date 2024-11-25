@@ -1,6 +1,9 @@
 import supabaseClient from "@/utils/supabase";
 
-export async function getJobs(supabaseAccessToken,{ location, companyId, searchQuery }) {
+export async function getJobs(
+  supabaseAccessToken,
+  { location, companyId, searchQuery }
+) {
   const supabase = await supabaseClient(supabaseAccessToken);
 
   let query = supabase
@@ -28,8 +31,11 @@ export async function getJobs(supabaseAccessToken,{ location, companyId, searchQ
 
 // save jobs data
 
-
-export async function savedJobs(supabaseAccessToken,savedJobData,{ alreadySaved }) {
+export async function savedJobs(
+  supabaseAccessToken,
+  savedJobData,
+  { alreadySaved }
+) {
   const supabase = await supabaseClient(supabaseAccessToken);
 
   if (alreadySaved) {
@@ -42,7 +48,7 @@ export async function savedJobs(supabaseAccessToken,savedJobData,{ alreadySaved 
       console.error("Error deleting Saved Jobs:", error);
       return null;
     }
-    return data 
+    return data;
   } else {
     console.log("savedJobData before insert:", savedJobData);
     const { data, error } = await supabase
@@ -53,34 +59,51 @@ export async function savedJobs(supabaseAccessToken,savedJobData,{ alreadySaved 
       console.error("Error inserting the Jobs", error.message);
       return null;
     }
-    return data
-
+    return data;
   }
 }
 
-export async function getSingleJob(supabaseAccessToken,{job_id}){   
-  const supabase = await supabaseClient(supabaseAccessToken)    
-  const {data,error} = await supabase.from("jobs")
-  .select("*, company: companies(companyName,companyLogoURL),applications:applications!applications_job_id_fkey(*)")
-  .eq("id",job_id)
-  .single()
-  
-  if(error){
-     console.error("Error fetching the company", error);
-     return null
-  }
-  return data  
- }
+export async function getSingleJob(supabaseAccessToken, { job_id }) {
+  const supabase = await supabaseClient(supabaseAccessToken);
+  const { data, error } = await supabase
+    .from("jobs")
+    .select(
+      "*, company: companies(companyName,companyLogoURL),applications:applications!applications_job_id_fkey(*)"
+    )
+    .eq("id", job_id)
+    .single();
 
- export async function updateHiringStatus(supabaseAccessToken,{job_id},jobStatus){
-  const supabase = await supabaseClient(supabaseAccessToken)
-  const {data,error} = await supabase.from("jobs")
-  .update({jobStatus})
-  .eq("id",job_id)
-  .select()
-  if(error){
+  if (error) {
+    console.error("Error fetching the company", error);
+    return null;
+  }
+  return data;
+}
+
+export async function updateHiringStatus(
+  supabaseAccessToken,
+  { job_id },
+  jobStatus
+) {
+  const supabase = await supabaseClient(supabaseAccessToken);
+  const { data, error } = await supabase
+    .from("jobs")
+    .update({ jobStatus })
+    .eq("id", job_id)
+    .select();
+  if (error) {
     console.error("Error updating the job", error);
   }
-  return data
- }
- 
+  return data;
+}
+
+export async function postJob(supabaseAccessToken,_,jobData) {
+  const supabase = await supabaseClient(supabaseAccessToken);
+  const { data, error } = supabase.from("jobs").insert([jobData]);
+
+  if (error) {
+    console.log("Error occured while posting the job", error);
+    return null
+  }
+  return data;
+}

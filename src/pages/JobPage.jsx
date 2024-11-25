@@ -14,11 +14,11 @@ import ApplicationCard from '@/components/ApplicationCard.jsx'
 function JobPage() {
   const { isLoaded, user } = useUser()
   const { id } = useParams()
-  
+
   const { fun: jobIdFun, data: jobData, loading: isJobLoading } = useFetch(getSingleJob, {
     job_id: id
   })
-  
+
   const { fun: updateJobStatus, loading: isLoading } = useFetch(updateHiringStatus, {
     job_id: id
   })
@@ -51,7 +51,7 @@ function JobPage() {
           {jobData?.jobLocation}
         </div>
         <div className='flex gap-2' >
-          <Briefcase />{jobData?.applications?.length}Applicants
+          <Briefcase />{jobData?.applications?.length} applicants
         </div>
         <div className='flex gap-2' >
           {jobData?.jobStatus ? <><DoorOpen />Open </> : <><DoorClosed />Closed</>}
@@ -60,16 +60,17 @@ function JobPage() {
 
 
       {jobData?.recruiter_id === user?.id &&
-        <Select onValueChange={handleStatusChange}>
+        (<Select onValueChange={handleStatusChange}>
           <SelectTrigger
             className={`w-full ${jobData?.jobStatus ? "bg-green-950" : "bg-red-950"}`}>
             <SelectValue placeholder={"Hiring Status" + (jobData?.jobStatus ? "(Open)" : "(Closed)")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="open">Open </SelectItem>
-            <SelectItem value="closed">Closed </SelectItem>
+            <SelectItem value="open">Open</SelectItem>
+            <SelectItem value="closed">Closed</SelectItem>
           </SelectContent>
         </Select>
+        )
       }
 
       <h2 className='text-2xl sm:text-3xl font-bold'>About the Job</h2>
@@ -91,14 +92,14 @@ function JobPage() {
             return application?.candidate_id === user?.id
           })} />}
       {jobData?.applications?.length > 0 && jobData?.recruiter_id === user?.id && (
-         <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-2'>
           <h2 className='text-2xl sm:text-3xl font-bold' >Applications</h2>
-          {jobData?.applications.map((application)=>{  
+          {jobData?.applications.map((application) => {
             return <ApplicationCard
-             key={application?.id} 
-             application={application}/>
+              key={application?.id}
+              application={application} />
           })}
-         </div>
+        </div>
       )}
     </div>
 

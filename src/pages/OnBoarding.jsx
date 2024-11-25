@@ -7,7 +7,6 @@ import { useEffect } from 'react'
 
 function OnBoarding() {
   const { user, isLoaded } = useUser()
-  console.log(user);
 
   const navigate = useNavigate()
 
