@@ -97,13 +97,16 @@ export async function updateHiringStatus(
   return data;
 }
 
-export async function postJob(supabaseAccessToken,_,jobData) {
+export async function postJob(supabaseAccessToken, _, jobData) {
   const supabase = await supabaseClient(supabaseAccessToken);
-  const { data, error } = supabase.from("jobs").insert([jobData]);
+  const { data, error } = supabase
+  .from("jobs")
+  .insert([jobData])
+  .select();
 
   if (error) {
     console.log("Error occured while posting the job", error);
-    return null
+    return null;
   }
   return data;
 }
