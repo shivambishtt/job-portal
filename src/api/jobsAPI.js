@@ -99,6 +99,7 @@ export async function updateHiringStatus(
 
 
 export async function postJob(supabaseAccessToken, _, jobData) {
+  
   const supabase = await supabaseClient(supabaseAccessToken);
   const { data, error } = await supabase
   .from("jobs")
@@ -106,7 +107,7 @@ export async function postJob(supabaseAccessToken, _, jobData) {
   .select();
 
   if (error) {
-    console.log("Error occured while posting the job", error);
+    console.log("Error occured while posting the job", error.message);
     return null;
   }
   return data;
