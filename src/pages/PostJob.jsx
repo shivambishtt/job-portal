@@ -11,30 +11,31 @@ import { State } from 'country-state-city';
 import { fetchCompanies } from '@/api/companiesAPI';
 import { useUser } from '@clerk/clerk-react';
 import { BarLoader } from 'react-spinners';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
 import { Button } from '@/components/ui/button';
+import { GitCompareIcon } from 'lucide-react';
 
 function PostJob() {
   const schema = z.object({
     jobTitle: z.string().min(1, { message: 'Title is required' }),
     jobDescription: z.string().min(1, { message: 'Description is required' }),
     jobLocation: z.string().min(1, { message: 'Select a location' }),
-    company_id: z.string().min(1, { message: 'Select or add a new company' }),
-    skills: z.string().min(1, { message: 'Skills are required' }),
+    companyId: z.string().min(1, { message: 'Select or add a new company' }),
+    jobRequirements: z.string().min(1, { message: 'jobRequirements are required' }),
   });
 
   const { user, isLoaded } = useUser();
 
   const { register, control, handleSubmit, formState: { errors } } = useForm({
-    defaultValues: { jobLocation: '', company_id: '', skills: '' }, resolver: zodResolver(schema)
+    defaultValues: { jobLocation: '', companyId: '', jobRequirements: '' }, resolver: zodResolver(schema)
   });
 
 
   const { data: postJobData, loading: postJobLoading, fun: postJobFun, error: postJobError } = useFetch(postJob);
 
-  const onSubmit = (data) => {    
-    postJob({
+  const onSubmit = (data) => {
+    postJobFun({
       ...data,
       recruiter_id: user?.id,
       jobStatus: true,
@@ -102,15 +103,16 @@ function PostJob() {
           />
 
           <Controller
-            name="company_id"
+            name="companyId"
             control={control}
             render={({ field }) => {
+              
               return (
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger>
                     <SelectValue placeholder="Company">
-                      {field.value
-                        ? companyData?.find((company) => company.company_id === Number(field.value))?.companyName : "Company"}
+                      {field?.value
+                        ? companyData?.find((company) => company.id === Number(field.value))?.companyName : "Company"}
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
@@ -132,15 +134,15 @@ function PostJob() {
           {/* Add company drawer */}
         </div>
         {errors.jobLocation && <p className='text-red-500'>{errors.jobLocation.message}</p>}
-        {errors.company_id && <p className='text-red-500'>{errors.company_id.message}</p>}
+        {errors.companyId && <p className='text-red-500'>{errors.companyId.message}</p>}
 
         <Controller
-          name="skills"
+          name="jobRequirements"
           control={control}
           render={({ field }) => {
-            return <MDEditor value={field.value} onChange={field.onChange} />
+            return <MDEditor value={field?.value} onChange={field?.onChange} />
           }} />
-        {errors?.skills && <p className='text-red-500'>{errors?.skills?.message}</p>}
+        {errors?.jobRequirements && <p className='text-red-500'>{errors?.jobRequirements?.message}</p>}
 
         {postJobError?.message && <p className='text-red-500'>{postJobError?.message}</p>}
 

@@ -97,9 +97,10 @@ export async function updateHiringStatus(
   return data;
 }
 
+
 export async function postJob(supabaseAccessToken, _, jobData) {
   const supabase = await supabaseClient(supabaseAccessToken);
-  const { data, error } = supabase
+  const { data, error } = await supabase
   .from("jobs")
   .insert([jobData])
   .select();
