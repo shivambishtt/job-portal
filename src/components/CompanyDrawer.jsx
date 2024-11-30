@@ -15,13 +15,18 @@ function CompanyDrawer({ fetchCompanies }) {
         companyLogoURL: z.any().refine((file) => file[0] && (file[0].type === "image/png" || file[0].type === "image/jpeg"), { message: "Only images are allowed" })
     })
 
+    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) })
 
-    const { loading: companyLoading, data: uploadCompanyData, error: uploadCompanyError, fun: uploadCompanyFun } = useFetch(uploadCompany)
+    const {
+        loading: companyLoading,
+        data: uploadCompanyData,
+        error: uploadCompanyError,
+        fun: uploadCompanyFun } = useFetch(uploadCompany)
 
-    const onSubmit = () => {
+    const onSubmit = async (data) => {
         uploadCompanyFun({
-            ...uploadCompanyData,
-            companyLogoURL: uploadCompanyData?.companyLogoURL[0]
+            ...data,
+            companyLogoURL: data?.companyLogoURL[0]
 
         })
     }
@@ -32,7 +37,6 @@ function CompanyDrawer({ fetchCompanies }) {
         }
     }, [companyLoading])
 
-    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) })
     return (
         <div>
             <Drawer>
@@ -50,26 +54,28 @@ function CompanyDrawer({ fetchCompanies }) {
                     <form className='flex gap-2 p-4'>
                         <Input
                             placeholder="Company name" {...register("companyName")} />
+
                         <Input
                             cursor="pointer"
                             className="file:text-gray-500"{...register("companyLogoURL")}
                             type="file"
                             accept="image/*" />
+
                         <Button
                             className="w-40 bg-blue-500 text-white"
                             type="button"
                             variant="primary"
                             onClick={handleSubmit(onSubmit)}
-                        >Add</Button>
+                        >Add
+                        </Button>
                     </form>
-
-                    {errors.companyName && <p className='text-red-500'>{errors.companyName.message}</p>}
-                    {errors.companyLogoURL && <p className='text-red-500'>{errors.companyLogoURL.message}</p>}
-                    {uploadCompanyError?.message && (
-                        <p>{uploadCompanyError?.message}</p>
-                    )}
-                    {companyLoading && <BarLoader width={"100%"} color='#36d7b7' />}
                     <DrawerFooter>
+                        {errors.companyName && <p className='text-red-500'>{errors.companyName.message}</p>}
+                        {errors.companyLogoURL && <p className='text-red-500'>{errors.companyLogoURL.message}</p>}
+                        {uploadCompanyError?.message && (
+                            <p>{uploadCompanyError?.message}</p>
+                        )}
+                        {companyLoading && <BarLoader width={"100%"} color='#36d7b7' />}
                         <DrawerClose asChild>
                             <Button variant="destructive" type="button">Cancel</Button>
                         </DrawerClose>

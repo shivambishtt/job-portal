@@ -81,56 +81,50 @@ function PostJob() {
           <Controller
             name="jobLocation"
             control={control}
-            render={({ field }) => {
-              return (
-                <Select value={field?.value} onValueChange={field?.onChange}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Add location" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {State.getStatesOfCountry('IN').map(({ name }) => {
-                        return (
-                          <SelectItem key={name} value={name}>
-                            {name}
-                          </SelectItem>
-                        );
-                      })}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              );
-            }}
+            render={({ field }) => <Select value={field?.value} onValueChange={field?.onChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Add location" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {State.getStatesOfCountry('IN').map(({ name }) => {
+                    return (
+                      <SelectItem key={name} value={name}>
+                        {name}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            }
           />
 
           <Controller
             name="companyId"
             control={control}
-            render={({ field }) => {
-              return (
-                <Select value={field?.value} onValueChange={field?.onChange}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Company">
-                      {field.value ? companyData?.find((company) => company.id === Number(field.value))?.companyName : "Company"}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {companyData?.map(({ id, companyName }) => {
-                        return (
-                          <SelectItem key={companyName} value={id}>
-                            {companyName}
-                          </SelectItem>
-                        );
-                      })}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              );
-            }}
+            render={({ field }) => <Select value={field.value} onValueChange={field.onChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Company">
+                  {field.value ? companyData?.find((company) => company.id === Number(field.value))?.companyName : "Company"}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {companyData?.map(({ id, companyName }) => {
+                    return (
+                      <SelectItem key={companyName} value={id}>
+                        {companyName}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            }
           />
 
-          <CompanyDrawer fetchCompanies={postJobFun} />
+          <CompanyDrawer fetchCompanies={fetchCompanyFun} />
         </div>
         {errors.jobLocation && <p className='text-red-500'>{errors.jobLocation.message}</p>}
         {errors.companyId && <p className='text-red-500'>{errors.companyId.message}</p>}
