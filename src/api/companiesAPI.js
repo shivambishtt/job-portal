@@ -15,24 +15,24 @@ export async function fetchCompanies(supabaseAccessToken) {
 export async function uploadCompany(supabaseAccessToken, _, companyData) {
   const supabase = await supabaseClient(supabaseAccessToken);
   const random = Math.floor(Math.random() * 9000);
-  const fileName = `logo- ${random} - ${companyData.companyName}`;
+  const fileName = `companyLogo-${random}-${companyData.companyName}`;
 
   const { error: storageError } = await supabase.storage
     .from("companyLogo")
-    .upload(fileName, companyData.companyLogoURL);
+    .upload(fileName, companyData.companyLogo);
 
   if (storageError) {
-    console.log("Error occured while uploading the URL", error);
+    console.log("Error occured while uploading the Logo", storageError);
     return null;
   }
-
   const companyLogo = `${supabaseUrl}/storage/v1/object/public/companyLogo/${fileName}`;
+
   const { data, error } = await supabase
     .from("companies")
     .insert([
       {
         companyName: companyData.companyName,
-        companyLogo,
+        companyLogoURL: companyLogo,
       },
     ])
     .select();

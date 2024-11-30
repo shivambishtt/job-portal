@@ -29,7 +29,7 @@ function PostJob() {
   const { user, isLoaded } = useUser();
   const navigate = useNavigate()
   const { register, control, handleSubmit, formState: { errors } } = useForm({
-    defaultValues: { jobLocation: '', companyId: '', jobRequirements: '' }, resolver: zodResolver(schema)
+    defaultValues: { jobLocation: '', companyId: "", jobRequirements: '' }, resolver: zodResolver(schema)
   });
 
 
@@ -83,7 +83,7 @@ function PostJob() {
             control={control}
             render={({ field }) => {
               return (
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select value={field?.value} onValueChange={field?.onChange}>
                   <SelectTrigger>
                     <SelectValue placeholder="Add location" />
                   </SelectTrigger>
@@ -107,13 +107,11 @@ function PostJob() {
             name="companyId"
             control={control}
             render={({ field }) => {
-
               return (
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select value={field?.value} onValueChange={field?.onChange}>
                   <SelectTrigger>
                     <SelectValue placeholder="Company">
-                      {field?.value
-                        ? companyData?.find((company) => company.id === Number(field.value))?.companyName : "Company"}
+                      {field.value ? companyData?.find((company) => company.id === Number(field.value))?.companyName : "Company"}
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
@@ -132,7 +130,7 @@ function PostJob() {
             }}
           />
 
-            <CompanyDrawer fetchCompanies ={postJobFun}/>
+          <CompanyDrawer fetchCompanies={postJobFun} />
         </div>
         {errors.jobLocation && <p className='text-red-500'>{errors.jobLocation.message}</p>}
         {errors.companyId && <p className='text-red-500'>{errors.companyId.message}</p>}
