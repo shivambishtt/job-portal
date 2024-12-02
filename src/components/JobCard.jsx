@@ -7,29 +7,30 @@ import { Button } from './ui/button'
 import { savedJobs } from '@/api/jobsAPI'
 import useFetch from '@/hooks/useFetch'
 
-function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => { } }) {    
+
+// issue happening when you are clicking the save job ideaally it should add the job_id also
+
+function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => { } }) {
     const [saved, setSaved] = useState(savedInit)
-    const { fun: savedJobsFun, data: saveJobs, loading: savedJobsLoading } = useFetch(savedJobs)
     const { user } = useUser()
 
-    
+    const {
+        fun: savedJobsFun,
+        data: saveJobs,
+        loading: savedJobsLoading
+    } = useFetch(savedJobs)
+
+
+
     const handleSavedJob = async () => {
-        try {
-            await savedJobsFun({
-                user_id: user.id,
-                job_id: job.id,
-            })
-            if (job.job_id === null) {
-                console.log("It is null");
+        await savedJobsFun({
+            user_id: user?.id,
+            job_id: job?.id
+        })
+        onJobSaved()
 
-            }
-            onJobSaved()
-        }
-        catch (error) {
-            console.log("Error occured while executing the savedJobsFun");
-
-        }
     }
+
     useEffect(() => {
         if (saveJobs !== undefined) setSaved(saveJobs?.length > 0) //edit
     }, [saveJobs])
@@ -38,23 +39,24 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
 
         <Card className="flex flex-col">
             <CardHeader>
-                <CardTitle className="flex justify-between font-bold">{job.jobTitle}
+                <CardTitle className="flex justify-between font-bold">
+                    {job?.jobTitle}
                     {!isMyJob && <Trash2Icon className='cursor-pointer text-red-300' fill='red' size={20} />}
                 </CardTitle>
             </CardHeader>
 
             <CardContent className="flex flex-col gap-4 flex-1" >
                 <div className='flex justify-between' >
-                    {job.company && <img className=' flex items-center h-12' src={job.company.companyLogoURL} />}
+                    {job?.company && <img className=' flex items-center h-12' src={job?.company?.companyLogoURL} />}
                     <div className='flex gap-2 items-center'>
-                        <MapPinIcon className='mt-2' size={15} />{job.jobLocation}
+                        <MapPinIcon className='mt-2' size={15} />{job?.jobLocation}
                     </div>
                 </div>
                 <hr />
-                {job.jobDescription}
+                {job?.jobDescription}
             </CardContent>
             <CardFooter className="flex gap-2">
-                <Link to={`/job/${job.id}`} className="flex-1">
+                <Link to={`/job/${job?.id}`} className="flex-1">
                     <Button variant="secondary" className="w-full">
                         More Details
                     </Button>

@@ -56,9 +56,6 @@ function JobListing() {
     }
   }, [isLoaded, location, companyId, searchQuery])
 
-  useEffect(() => {
-
-  })
 
   if (!isLoaded) {
     return <BarLoader className='mb-4' width={"100%"} color='#36d7b7' />
@@ -131,7 +128,12 @@ function JobListing() {
           <div className='mt-10 grid md:grid-cols-2 lg:grid-cols-2 gap-4 '>
             {jobs?.length ? (
               jobs.map((job) => {
-                return <JobCard key={job.id} job={job} savedInit={job?.savedJobs?.length > 0} />
+                return <JobCard
+                  key={job?.id}
+                  job={job}
+                  savedInit={job?.savedJobs?.length > 0}
+                />
+
               })
             ) :
               <div>No Jobs Found</div>

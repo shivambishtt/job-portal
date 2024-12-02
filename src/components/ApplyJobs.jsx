@@ -27,11 +27,10 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
   const { loading: loadingApply, error: errorApply, fun: fnApply } = useFetch(applyForJob)
 
   const onSubmit = (data) => {
-
     fnApply({
       ...data,
-      job_id: job.id,
-      candidate_id: user.id,
+      job_id: job?.id,
+      candidate_id: user?.id,
       name: user.fullName,
       status: "applied",
       resume: data.resume[0],

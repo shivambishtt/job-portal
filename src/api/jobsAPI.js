@@ -39,24 +39,23 @@ export async function savedJobs(
   const supabase = await supabaseClient(supabaseAccessToken);
 
   if (alreadySaved) {
-    const { data, error } = await supabase
+    const { data, error: deleteError } = await supabase
       .from("savedJobs")
       .delete()
       .eq("job_id", savedJobData.job_id);
 
-    if (error) {
-      console.error("Error deleting Saved Jobs:", error);
-      return null;
+    if (deleteError) {
+      console.error("Error deleting Saved Jobs:", deleteError);
     }
     return data;
   } else {
-    console.log("savedJobData before insert:", savedJobData);
-    const { data, error } = await supabase
+    const { data, error: insertionError } = await supabase
       .from("savedJobs")
       .insert([savedJobData])
       .select();
-    if (error) {
-      console.error("Error inserting the Jobs", error.message);
+
+    if (insertionError) {
+      console.error("Error inserting the Jobs", insertionError.message);
       return null;
     }
     return data;
@@ -65,6 +64,7 @@ export async function savedJobs(
 
 export async function getSingleJob(supabaseAccessToken, { job_id }) {
   const supabase = await supabaseClient(supabaseAccessToken);
+
   const { data, error } = await supabase
     .from("jobs")
     .select(
@@ -97,17 +97,29 @@ export async function updateHiringStatus(
   return data;
 }
 
-
 export async function postJob(supabaseAccessToken, _, jobData) {
-  
   const supabase = await supabaseClient(supabaseAccessToken);
   const { data, error } = await supabase
-  .from("jobs")
-  .insert([jobData])
-  .select();
+    .from("jobs")
+    .insert([jobData])
+    .select();
 
   if (error) {
     console.log("Error occured while posting the job", error.message);
+    return null;
+  }
+  return data;
+}
+
+export async function fetchSavedJob(supabaseAccessToken) {
+  const supabase = await supabaseClient(supabaseAccessToken);
+
+  const { data, error } = await supabase
+    .from("savedJobs")
+    .select("*, job:jobs(*,company:companies(companyName,companyLogoURL))");
+
+  if (error) {
+    console.log("Error occured while fetching the saved jobs", error);
     return null;
   }
   return data;

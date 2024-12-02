@@ -90,7 +90,9 @@ function JobPage() {
           fetchJobFun={jobIdFun}
           applied={jobData?.applications?.find((application) => {
             return application?.candidate_id === user?.id
-          })} />}
+          })}
+        />}
+
       {jobData?.applications?.length > 0 && jobData?.recruiter_id === user?.id && (
         <div className='flex flex-col gap-2'>
           <h2 className='text-2xl sm:text-3xl font-bold' >Applications</h2>
