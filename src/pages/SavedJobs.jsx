@@ -36,8 +36,6 @@ function SavedJobs() {
         <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {savedJobData?.length ? (
             savedJobData?.map((savedJob) => {
-              console.log(savedJob, "saved job in saved job component");
-
               return (
                 <JobCard
                   key={savedJob?.id}

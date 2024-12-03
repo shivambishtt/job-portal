@@ -4,8 +4,9 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Heart, MapPinIcon, Trash2Icon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Button } from './ui/button'
-import { savedJobs } from '@/api/jobsAPI'
+import {savedJobs } from '@/api/jobsAPI'
 import useFetch from '@/hooks/useFetch'
+import { BarLoader } from 'react-spinners'
 
 
 // issue happening when you are clicking the save job ideaally it should add the job_id also
@@ -14,40 +15,50 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
     const [saved, setSaved] = useState(savedInit)
     const { user } = useUser()
 
+    console.log(job, "job");
+
     const {
-        fun: savedJobsFun,
-        data: saveJobs,
-        loading: savedJobsLoading
-    } = useFetch(savedJobs)
+        loading: savedJobLoading,
+        data: savedJobData,
+        error: savedJobError,
+        fun: savedJobFunction } = useFetch(savedJobs, { alreadySaved: saved })
 
-
-
+        
     const handleSavedJob = async () => {
-        await savedJobsFun({
-            user_id: user?.id,
+        await savedJobFunction({
+            user_id: user.id,
             job_id: job?.id
         })
         onJobSaved()
-
     }
 
+
     useEffect(() => {
-        if (saveJobs !== undefined) setSaved(saveJobs?.length > 0) //edit
-    }, [saveJobs])
+        if (savedJobData !== undefined) setSaved(savedJobData?.length > 0) //edit
+    }, [savedJobData])
 
     return (
 
         <Card className="flex flex-col">
-            <CardHeader>
+            {loadingDeleteJob && (<BarLoader width={"100%"} color='#36d7b7' />)}
+            <CardHeader className="flex">
                 <CardTitle className="flex justify-between font-bold">
                     {job?.jobTitle}
-                    {!isMyJob && <Trash2Icon className='cursor-pointer text-red-300' fill='red' size={20} />}
+                    {!isMyJob &&
+                        <Trash2Icon
+                            className='cursor-pointer text-red-300'
+                            fill='red'
+                            size={20}
+                            onClick={handleDeleteJob}
+                        />}
                 </CardTitle>
             </CardHeader>
 
             <CardContent className="flex flex-col gap-4 flex-1" >
                 <div className='flex justify-between' >
-                    {job?.company && <img className=' flex items-center h-12' src={job?.company?.companyLogoURL} />}
+                    {job?.company && <img
+                        className='flex items-center h-12'
+                        src={job.company?.companyLogoURL} />}
                     <div className='flex gap-2 items-center'>
                         <MapPinIcon className='mt-2' size={15} />{job?.jobLocation}
                     </div>
@@ -66,7 +77,7 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
                     (<Button
                         className="w-15"
                         onClick={handleSavedJob}
-                        disabled={savedJobsLoading}
+                        disabled={savedJobLoading}
                         variant="outline" >
                         {saved ? <Heart size={25} stroke="red" fill='red' /> : <Heart size={25} />}
 

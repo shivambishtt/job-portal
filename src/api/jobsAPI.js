@@ -33,33 +33,34 @@ export async function getJobs(
 
 export async function savedJobs(
   supabaseAccessToken,
-  savedJobData,
-  { alreadySaved }
+  { alreadySaved },
+  savedJob
 ) {
   const supabase = await supabaseClient(supabaseAccessToken);
 
   if (alreadySaved) {
-    const { data, error: deleteError } = await supabase
+    const { data, error: deletionError } = await supabase
       .from("savedJobs")
       .delete()
-      .eq("job_id", savedJobData.job_id);
+      .eq("job_id", savedJob.job_id);
 
-    if (deleteError) {
-      console.error("Error deleting Saved Jobs:", deleteError);
-    }
-    return data;
-  } else {
-    const { data, error: insertionError } = await supabase
-      .from("savedJobs")
-      .insert([savedJobData])
-      .select();
-
-    if (insertionError) {
-      console.error("Error inserting the Jobs", insertionError.message);
+    if (deletionError) {
+      console.log("Error occured while deleting the saved job", deletionError);
       return null;
     }
     return data;
   }
+
+  const { data, error: insertionError } = await supabase
+    .from("savedJobs")
+    .insert([savedJob])
+    .select();
+
+  if (insertionError) {
+    console.log("Error occured while saving the job", insertionError);
+    return null;
+  }
+  return data;
 }
 
 export async function getSingleJob(supabaseAccessToken, { job_id }) {
