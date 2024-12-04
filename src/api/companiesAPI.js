@@ -19,7 +19,7 @@ export async function uploadCompany(supabaseAccessToken, _, companyData) {
 
   const { error: storageError } = await supabase.storage
     .from("companyLogo")
-    .upload(fileName, companyData.companyLogo);
+    .upload(fileName, companyData.companyLogoURL);
 
   if (storageError) {
     console.log("Error occured while uploading the Logo", storageError);

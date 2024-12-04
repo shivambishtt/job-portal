@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Heart, MapPinIcon, Trash2Icon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Button } from './ui/button'
-import {savedJobs } from '@/api/jobsAPI'
+import { savedJobs } from '@/api/jobsAPI'
 import useFetch from '@/hooks/useFetch'
 import { BarLoader } from 'react-spinners'
 
@@ -23,7 +23,6 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
         error: savedJobError,
         fun: savedJobFunction } = useFetch(savedJobs, { alreadySaved: saved })
 
-        
     const handleSavedJob = async () => {
         await savedJobFunction({
             user_id: user.id,
@@ -40,7 +39,7 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
     return (
 
         <Card className="flex flex-col">
-            {loadingDeleteJob && (<BarLoader width={"100%"} color='#36d7b7' />)}
+            {savedJobLoading && (<BarLoader width={"100%"} color='#36d7b7' />)}
             <CardHeader className="flex">
                 <CardTitle className="flex justify-between font-bold">
                     {job?.jobTitle}
@@ -49,7 +48,6 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
                             className='cursor-pointer text-red-300'
                             fill='red'
                             size={20}
-                            onClick={handleDeleteJob}
                         />}
                 </CardTitle>
             </CardHeader>
@@ -58,7 +56,7 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
                 <div className='flex justify-between' >
                     {job?.company && <img
                         className='flex items-center h-12'
-                        src={job.company?.companyLogoURL} />}
+                        src={job?.company?.companyLogoURL} alt='company logo' />}
                     <div className='flex gap-2 items-center'>
                         <MapPinIcon className='mt-2' size={15} />{job?.jobLocation}
                     </div>

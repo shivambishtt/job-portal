@@ -99,7 +99,7 @@ function JobListing() {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {companyData?.map((company) => {                
+              {companyData?.map((company) => {                                
                 return <SelectItem key={company.id} value={company.id} >
                   {company.companyName}
                 </SelectItem>
