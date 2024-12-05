@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Heart, MapPinIcon, Trash2Icon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Button } from './ui/button'
-import { savedJobs } from '@/api/jobsAPI'
+import { deleteSavedJob, savedJobs } from '@/api/jobsAPI'
 import useFetch from '@/hooks/useFetch'
 import { BarLoader } from 'react-spinners'
 
@@ -15,13 +15,16 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
     const [saved, setSaved] = useState(savedInit)
     const { user } = useUser()
 
-    console.log(job, "job");
 
+    // ab jab me koi job ko delete kar raha hu toh me chahta hu ki jab mera button click ho to ek loader type ka dikhaye uskoo hum achieve kar sakte hain ki agar deleteJobData.length -1
     const {
         loading: savedJobLoading,
         data: savedJobData,
         error: savedJobError,
         fun: savedJobFunction } = useFetch(savedJobs, { alreadySaved: saved })
+
+    const { fun: deleteJobFun, error: deleteJobError, loading: deleteJobLoading } = useFetch(deleteSavedJob)
+
 
     const handleSavedJob = async () => {
         await savedJobFunction({
@@ -31,6 +34,12 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
         onJobSaved()
     }
 
+    const handleDeleteJob = async () => {
+        await deleteJobFun({
+            job_id: job?.id
+        })
+        onJobSaved()
+    }
 
     useEffect(() => {
         if (savedJobData !== undefined) setSaved(savedJobData?.length > 0) //edit
@@ -39,7 +48,7 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
     return (
 
         <Card className="flex flex-col">
-            {savedJobLoading && (<BarLoader width={"100%"} color='#36d7b7' />)}
+            {savedJobLoading || deleteJobLoading  && (<BarLoader width={"100%"} color='#36d7b7' />)}
             <CardHeader className="flex">
                 <CardTitle className="flex justify-between font-bold">
                     {job?.jobTitle}
@@ -48,6 +57,7 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
                             className='cursor-pointer text-red-300'
                             fill='red'
                             size={20}
+                            onClick={handleDeleteJob}
                         />}
                 </CardTitle>
             </CardHeader>
