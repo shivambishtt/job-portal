@@ -13,7 +13,7 @@ function ApplicationCard({ application, isCandidate = false }) {
         link.target = "_blank";
         link.click()
     }
-    const { loading: loadingHiringStatus, fun:funHiringStatus } = useFetch(updateApplicationStatus, { job_id: application?.job_id })
+    const { loading: loadingHiringStatus, fun: funHiringStatus } = useFetch(updateApplicationStatus, { job_id: application?.job_id })
 
     const handleStatusChange = (status) => {
         funHiringStatus(status)
@@ -24,7 +24,7 @@ function ApplicationCard({ application, isCandidate = false }) {
             {loadingHiringStatus && <BarLoader width={"100%"} color='#36d7b7' />}
             <CardHeader>
                 <CardTitle className="flex justify-between">
-                    {isCandidate ? `${application?.job?.jobTitle} at ${application?.job?.companyName}` : `${application?.name}`}
+                    {isCandidate ? `${application?.job?.jobTitle} at ${application?.job?.company?.companyName}` : `${application?.name}`}
                     <Download
                         size={18}
                         className="bg-white text-black rounded-full h-8 w-8 p-1.5 cursor-pointer"

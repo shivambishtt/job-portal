@@ -8,15 +8,10 @@ import { deleteSavedJob, savedJobs } from '@/api/jobsAPI'
 import useFetch from '@/hooks/useFetch'
 import { BarLoader } from 'react-spinners'
 
-
-// issue happening when you are clicking the save job ideaally it should add the job_id also
-
 function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => { } }) {
     const [saved, setSaved] = useState(savedInit)
     const { user } = useUser()
 
-
-    // ab jab me koi job ko delete kar raha hu toh me chahta hu ki jab mera button click ho to ek loader type ka dikhaye uskoo hum achieve kar sakte hain ki agar deleteJobData.length -1
     const {
         loading: savedJobLoading,
         data: savedJobData,
@@ -48,11 +43,11 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
     return (
 
         <Card className="flex flex-col">
-            {savedJobLoading || deleteJobLoading  && (<BarLoader width={"100%"} color='#36d7b7' />)}
+            {savedJobLoading || deleteJobLoading && (<BarLoader width={"100%"} color='#36d7b7' />)}
             <CardHeader className="flex">
                 <CardTitle className="flex justify-between font-bold">
                     {job?.jobTitle}
-                    {!isMyJob &&
+                    {isMyJob &&
                         <Trash2Icon
                             className='cursor-pointer text-red-300'
                             fill='red'

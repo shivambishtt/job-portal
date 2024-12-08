@@ -140,3 +140,19 @@ export async function fetchSavedJob(supabaseAccessToken) {
   }
   return data;
 }
+
+export async function getMyJob(supabaseAccessToken, { recruiter_id }) {
+  const supabase = await supabaseClient(supabaseAccessToken);
+
+  const { data, error } = await supabase
+    .from("jobs")
+    .select("*,company:companies(companyName,companyLogoURL)")
+    .eq("recruiter_id", recruiter_id);
+
+  if (error) {
+    console.log("Error occured while fetching your jobs", error);
+    return null;
+  }
+  return data;
+}
+
