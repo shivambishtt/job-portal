@@ -18,19 +18,21 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
         error: savedJobError,
         fun: savedJobFunction } = useFetch(savedJobs, { alreadySaved: saved })
 
-    const { fun: deleteJobFun, error: deleteJobError, loading: deleteJobLoading } = useFetch(deleteSavedJob)
+    const {
+        fun: deleteJobFun,
+        loading: deleteJobLoading } = useFetch(deleteSavedJob, {
+            job_id: job?.id
+        })
 
+
+    const handleDeleteJob = async () => {
+        await deleteJobFun()
+        onJobSaved()
+    }
 
     const handleSavedJob = async () => {
         await savedJobFunction({
             user_id: user.id,
-            job_id: job?.id
-        })
-        onJobSaved()
-    }
-
-    const handleDeleteJob = async () => {
-        await deleteJobFun({
             job_id: job?.id
         })
         onJobSaved()
@@ -43,17 +45,17 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
     return (
 
         <Card className="flex flex-col">
-            {savedJobLoading || deleteJobLoading && (<BarLoader width={"100%"} color='#36d7b7' />)}
+            {deleteJobLoading && (<BarLoader width={"100%"} color='#36d7b7' />)}
             <CardHeader className="flex">
                 <CardTitle className="flex justify-between font-bold">
                     {job?.jobTitle}
-                    {isMyJob &&
-                        <Trash2Icon
-                            className='cursor-pointer text-red-300'
-                            fill='red'
-                            size={20}
-                            onClick={handleDeleteJob}
-                        />}
+                    {isMyJob && (<Trash2Icon
+                        className='cursor-pointer text-red-300'
+                        fill='red'
+                        size={20}
+                        onClick={handleDeleteJob}
+                    />
+                )}
                 </CardTitle>
             </CardHeader>
 

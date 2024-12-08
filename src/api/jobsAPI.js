@@ -112,13 +112,14 @@ export async function postJob(supabaseAccessToken, _, jobData) {
   return data;
 }
 
-export async function deleteSavedJob(supabaseAccessToken, _, { job_id }) {
+export async function deleteSavedJob(supabaseAccessToken, { job_id }) {
   const supabase = await supabaseClient(supabaseAccessToken);
 
   const { data, error } = await supabase
-    .from("savedJobs")
+    .from("jobs")
     .delete()
-    .eq("job_id", job_id);
+    .eq("id", job_id)
+    .select();
 
   if (error) {
     console.log("Error occured while deleting the saved job", error);
@@ -155,4 +156,3 @@ export async function getMyJob(supabaseAccessToken, { recruiter_id }) {
   }
   return data;
 }
-
