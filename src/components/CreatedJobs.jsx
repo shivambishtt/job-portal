@@ -38,7 +38,7 @@ function CreatedJobs() {
                         />
                     )
                 })
-            ) : "asasnlk"}
+            ) : ""}
         </div>
     )
 }

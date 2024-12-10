@@ -7,10 +7,14 @@ import { Button } from './ui/button'
 import { deleteSavedJob, savedJobs } from '@/api/jobsAPI'
 import useFetch from '@/hooks/useFetch'
 import { BarLoader } from 'react-spinners'
+import { useToast } from '@/hooks/use-toast'
+
 
 function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => { } }) {
     const [saved, setSaved] = useState(savedInit)
     const { user } = useUser()
+
+    const { toast } = useToast()
 
     const {
         loading: savedJobLoading,
@@ -35,6 +39,11 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
             user_id: user.id,
             job_id: job?.id
         })
+
+        toast({
+            title: `Job Saved for ${job?.jobTitle}`,
+            className: "bg-green-700"
+        })
         onJobSaved()
     }
 
@@ -55,7 +64,7 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
                         size={20}
                         onClick={handleDeleteJob}
                     />
-                )}
+                    )}
                 </CardTitle>
             </CardHeader>
 
@@ -87,7 +96,6 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
                         {saved ? <Heart size={25} stroke="red" fill='red' /> : <Heart size={25} />}
 
                     </Button>)}
-
             </CardFooter>
         </Card >
     )

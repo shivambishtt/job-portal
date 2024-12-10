@@ -10,6 +10,7 @@ import SavedJobs from './pages/SavedJobs';
 import JobPage from './pages/JobPage';
 import { ThemeProvider } from './components/ThemeProvider';
 import ProtectedRoute from './components/ProtectedRoutes';
+import { Toaster } from "@/components/ui/toaster"
 
 const router = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
         path: "/onboarding",
         element: (
           <ProtectedRoute>
-            <OnBoarding/>
+            <OnBoarding />
           </ProtectedRoute>
         ),
       },
@@ -73,9 +74,13 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <ThemeProvider defaultTheme='dark' storageKey='vite-ul-theme'>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <>
+
+      <ThemeProvider defaultTheme='dark' storageKey='vite-ul-theme'>
+        <RouterProvider router={router} />
+        <Toaster />
+      </ThemeProvider>
+    </>
   )
 }
 
