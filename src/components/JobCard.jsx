@@ -9,8 +9,7 @@ import useFetch from '@/hooks/useFetch'
 import { BarLoader } from 'react-spinners'
 import { useToast } from '@/hooks/use-toast'
 
-
-function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => { } }) {
+function JobCard({ job, isMyJob = true, savedInit = false, onJobSaved = () => { } }) {
     const [saved, setSaved] = useState(savedInit)
     const { user } = useUser()
 
@@ -31,6 +30,10 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
 
     const handleDeleteJob = async () => {
         await deleteJobFun()
+        toast({
+            title: `Job deleted for ${job?.jobTitle}`,
+            className: "bg-red-500"
+        })
         onJobSaved()
     }
 
@@ -39,7 +42,6 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
             user_id: user.id,
             job_id: job?.id
         })
-
         toast({
             title: `Job Saved for ${job?.jobTitle}`,
             className: "bg-green-700"
