@@ -4,6 +4,8 @@ import { BarLoader } from 'react-spinners'
 import { useUser } from '@clerk/clerk-react'
 import JobCard from '@/components/JobCard'
 import useFetch from '@/hooks/useFetch'
+import { useNavigate } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
 
 function SavedJobs() {
   const { isLoaded: userLoaded } = useUser()
@@ -13,6 +15,8 @@ function SavedJobs() {
     error: savedJobError,
     loading: savedJobLoading,
     fun: fetchSaved } = useFetch(fetchSavedJob)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (userLoaded) {
@@ -46,7 +50,14 @@ function SavedJobs() {
               );
             })
           ) : (
-            <div>No Saved Jobs 👀</div>
+            <>
+              <h1 className='text-xl'>Oops! No Saved Jobs 👀</h1>
+              <Button
+                onClick={() => navigate("/jobs")}
+              >Save a Job</Button>
+
+            </>
+
           )}
         </div>
       )}
