@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getJobs, updateHiringStatus } from "../api/jobsAPI.js"
+import { filterJobByExperience, getJobs, updateHiringStatus } from "../api/jobsAPI.js"
 import useFetch from '@/hooks/useFetch.js'
 import { useUser } from '@clerk/clerk-react'
 import { BarLoader } from 'react-spinners'
@@ -9,14 +9,13 @@ import { Input } from '@/components/ui/input.jsx'
 import { Button } from '@/components/ui/button.jsx'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select.jsx'
 import { State } from 'country-state-city'
-// import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination.jsx'
-// import { Link } from 'react-router-dom'
 
 function JobListing() {
   const { isLoaded } = useUser()
   const [searchQuery, setSearchQuery] = useState("")
   const [location, setLocation] = useState("")
   const [companyId, setCompanyId] = useState("")
+  const [jobExperience, setJobExperience] = useState(0)
 
   const { fun: jobsFun, data: jobs, loading: jobsLoading } = useFetch(getJobs, {
     location,
@@ -24,6 +23,8 @@ function JobListing() {
     searchQuery
   })
   const { fun: companyFun, data: companyData } = useFetch(fetchCompanies)
+
+  const { fun: filterYearFun, data: filterData, loading: filterDataLoading } = useFetch(filterJobByExperience)
 
   const handleSearch = (event) => {
     event.preventDefault()
@@ -41,6 +42,9 @@ function JobListing() {
     setSearchQuery("")
   }
 
+  useEffect(() => {
+    if (jobExperience) filterYearFun({ job_experience: jobExperience });
+  }, [jobExperience])
 
   useEffect(() => {
     if (isLoaded) companyFun()
@@ -99,11 +103,24 @@ function JobListing() {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {companyData?.map((company) => {                                
+              {companyData?.map((company) => {
                 return <SelectItem key={company.id} value={company.id} >
                   {company.companyName}
                 </SelectItem>
               })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <Select value={jobExperience} onValueChange={(jobExp) => setJobExperience(jobExp)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Filter by Experience" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="0-1">0-1 Years</SelectItem>
+              <SelectItem value="2-3">2-3 Years</SelectItem>
+              <SelectItem value="5+">5+ Years</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
