@@ -24,6 +24,7 @@ function PostJob() {
     jobLocation: z.string().min(1, { message: 'Select a location' }),
     companyId: z.string().min(1, { message: 'Select or add a new company' }),
     jobRequirements: z.string().min(1, { message: 'jobRequirements are required' }),
+    jobExperience: z.string().min(1, { message: "Experience is required" })
   });
 
   const { user, isLoaded } = useUser();
@@ -77,6 +78,8 @@ function PostJob() {
           <p className="text-red-500">{errors.jobDescription.message}</p>
         )}
 
+        <Input placeholder="Experience" {...register('jobExperience')} />
+        {errors.title && <p className='text-red-500'>{errors.title.message}</p>}
         <div className="flex gap-4 justify-between">
           <Controller
             name="jobLocation"
@@ -128,7 +131,6 @@ function PostJob() {
         </div>
         {errors.jobLocation && <p className='text-red-500'>{errors.jobLocation.message}</p>}
         {errors.companyId && <p className='text-red-500'>{errors.companyId.message}</p>}
-
         <Controller
           name="jobRequirements"
           control={control}
