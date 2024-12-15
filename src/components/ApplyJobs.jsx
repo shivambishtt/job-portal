@@ -10,8 +10,8 @@ import useFetch from '@/hooks/useFetch.js';
 import { applyForJob } from '@/api/applicationsAPI.js';
 import { BarLoader } from 'react-spinners';
 import { zodResolver } from "@hookform/resolvers/zod";
-//asChild extends something in the shadcn ui
 
+// dekh merko simply ek bat bolniu hai ki jo humara input h years of experience uski value jo hai === honi chahhiye humare jobExperience ke agar wo equal naihi hoti hai to hum daal denge you are not eligible
 const schema = z.object({
   experience: z.number().min(0, { message: "Experience must be atleast 0 " }).int(),
   skills: z.string().min(1, { message: "Skills are required" }),
@@ -44,7 +44,7 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
       <DrawerTrigger asChild>
         <Button
           variant={job?.jobStatus && !applied ? "blue" : "destructive"}
-          disabled={!job?.jobStatus || applied} //job not open
+          disabled={!job?.jobStatus || applied}
         >{job?.jobStatus ? (applied ? "Applied" : "Apply") : "Hiring Closed"}</Button>
       </DrawerTrigger>
       <DrawerContent>
@@ -127,7 +127,7 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
-    </Drawer>
+    </Drawer >
   )
 }
 

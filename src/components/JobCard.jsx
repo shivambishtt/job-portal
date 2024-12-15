@@ -91,7 +91,7 @@ function JobCard({ job, isMyJob = false, savedInit = false, onJobSaved = () => {
                         More Details
                     </Button>
                 </Link>
-
+                <Button>Experience : {job?.jobExperience} <span> Years </span> </Button>
                 {!isMyJob &&
                     (<Button
                         className="w-15"

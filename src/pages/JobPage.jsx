@@ -44,7 +44,6 @@ function JobPage() {
         <h1 className="gradient-title font-extrabold pb-3 text-5xl sm:text-5xl">{jobData?.jobTitle}</h1>
         <img src={jobData?.company?.companyLogoURL} className='h-12' alt={jobData?.jobTitle} />
       </div>
-
       <div className="flex justify-between" >
         <div className='flex gap-2' >
           <MapPinIcon />
@@ -55,6 +54,9 @@ function JobPage() {
         </div>
         <div className='flex gap-2' >
           {jobData?.jobStatus ? <><DoorOpen />Open </> : <><DoorClosed />Closed</>}
+        </div>
+        <div className='flex gap-2'>
+          {jobData?.jobExperience} Year Experience
         </div>
       </div>
 
@@ -78,10 +80,8 @@ function JobPage() {
       <h2 className='text-2xl sm:text-3xl font-bold'>
         What we are looking for
       </h2>
-      <h2>Posted by : {jobData?.recruiter_id}</h2>
       <MDEditor.Markdown className='bg-transparent sm:text-lg' source={jobData?.jobRequirements} />
 
-      {/* render applications */}
 
       {String(jobData?.recruiter_id) !== String(user?.id) &&
         <ApplyJobs
