@@ -156,21 +156,3 @@ export async function getMyJob(supabaseAccessToken, { recruiter_id }) {
   }
   return data;
 }
-
-export async function filterJobByExperience(
-  supabaseAccessToken,
-  { job_experience }
-) {
-  const supabase = await supabaseClient(supabaseAccessToken);
-
-  const { data, error } = await supabase
-    .from("jobs")
-    .select("*")
-    .eq("jobExperience", job_experience);
-
-  if (error) {
-    console.log("Error occured while fetching the job experience");
-    return null;
-  }
-  return data;
-}

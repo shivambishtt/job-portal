@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { filterJobByExperience, getJobs, updateHiringStatus } from "../api/jobsAPI.js"
+import { getJobs, updateHiringStatus } from "../api/jobsAPI.js"
 import useFetch from '@/hooks/useFetch.js'
 import { useUser } from '@clerk/clerk-react'
 import { BarLoader } from 'react-spinners'
@@ -10,12 +10,14 @@ import { Button } from '@/components/ui/button.jsx'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select.jsx'
 import { State } from 'country-state-city'
 
+
+// dekh simply merko ek esa logic likhna hai jisme ki mere paas ek select value hai jisme 3 types ki value hain theek hai ab merko logic ko ese banana hai ki jab bhi me kisi particular experience pe click karu toh sirf wahi companies dikhe jo ki wo experience maang rahi hai
+
 function JobListing() {
   const { isLoaded } = useUser()
   const [searchQuery, setSearchQuery] = useState("")
   const [location, setLocation] = useState("")
   const [companyId, setCompanyId] = useState("")
-  const [jobExperience, setJobExperience] = useState(0)
 
   const { fun: jobsFun, data: jobs, loading: jobsLoading } = useFetch(getJobs, {
     location,
@@ -24,7 +26,6 @@ function JobListing() {
   })
   const { fun: companyFun, data: companyData } = useFetch(fetchCompanies)
 
-  const { fun: filterYearFun, data: filterData, loading: filterDataLoading } = useFetch(filterJobByExperience)
 
   const handleSearch = (event) => {
     event.preventDefault()
@@ -42,9 +43,6 @@ function JobListing() {
     setSearchQuery("")
   }
 
-  useEffect(() => {
-    if (jobExperience) filterYearFun({ job_experience: jobExperience });
-  }, [jobExperience])
 
   useEffect(() => {
     if (isLoaded) companyFun()
@@ -112,15 +110,18 @@ function JobListing() {
           </SelectContent>
         </Select>
 
-        <Select value={jobExperience} onValueChange={(jobExp) => setJobExperience(jobExp)}>
+        <Select value={companyId} onValueChange={(companyId) => setCompanyId(companyId)}>
           <SelectTrigger>
-            <SelectValue placeholder="Filter by Experience" />
+            <SelectValue placeholder="Experience" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="0-1">0-1 Years</SelectItem>
-              <SelectItem value="2-3">2-3 Years</SelectItem>
-              <SelectItem value="5+">5+ Years</SelectItem>
+              {/* i want to implement that if the jobExperience is occuring more than once then show only one */}
+              {jobs?.map((job) => {
+                return <SelectItem key={job.id} value={job.jobExperience}>
+                  {job?.jobExperience}
+                </SelectItem>
+              })}
             </SelectGroup>
           </SelectContent>
         </Select>
