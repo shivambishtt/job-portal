@@ -10,18 +10,17 @@ import { Button } from '@/components/ui/button.jsx'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select.jsx'
 import { State } from 'country-state-city'
 
-
-// dekh simply merko ek esa logic likhna hai jisme ki mere paas ek select value hai jisme 3 types ki value hain theek hai ab merko logic ko ese banana hai ki jab bhi me kisi particular experience pe click karu toh sirf wahi companies dikhe jo ki wo experience maang rahi hai
-
 function JobListing() {
   const { isLoaded } = useUser()
   const [searchQuery, setSearchQuery] = useState("")
   const [location, setLocation] = useState("")
   const [companyId, setCompanyId] = useState("")
+  const [jobExperience, setJobExperience] = useState("")
 
   const { fun: jobsFun, data: jobs, loading: jobsLoading } = useFetch(getJobs, {
     location,
     companyId,
+    jobExperience,
     searchQuery
   })
   const { fun: companyFun, data: companyData } = useFetch(fetchCompanies)
@@ -41,6 +40,7 @@ function JobListing() {
     setLocation("")
     setCompanyId("")
     setSearchQuery("")
+    setJobExperience("")
   }
 
 
@@ -56,7 +56,7 @@ function JobListing() {
     if (isLoaded) {
       jobsFun()
     }
-  }, [isLoaded, location, companyId, searchQuery])
+  }, [isLoaded, location, companyId, searchQuery, jobExperience])
 
 
   if (!isLoaded) {
@@ -110,13 +110,12 @@ function JobListing() {
           </SelectContent>
         </Select>
 
-        <Select value={companyId} onValueChange={(companyId) => setCompanyId(companyId)}>
+        <Select value={jobExperience} onValueChange={(jobExperience) => setJobExperience(jobExperience)}>
           <SelectTrigger>
             <SelectValue placeholder="Experience" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {/* i want to implement that if the jobExperience is occuring more than once then show only one */}
               {jobs?.map((job) => {
                 return <SelectItem key={job.id} value={job.jobExperience}>
                   {job?.jobExperience}
@@ -125,6 +124,7 @@ function JobListing() {
             </SelectGroup>
           </SelectContent>
         </Select>
+        
         <Button
           className="sm:w-1/2"
           onClick={handleClearFilters}
