@@ -13,6 +13,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const schema = z.object({
   experience: z.number().min(0, { message: "Experience must be atleast 0 " }).int(),
+  email_id: z.string().min(1, { message: "Email is required" }),
+  mobile_number: z.string().min(1, { message: "Phone number is required" }),
   skills: z.string().min(1, { message: "Skills are required" }),
   education: z.enum(["Intermediate", "Graduate", "Post-Graduate"], { message: "Education is required" }),
   resume: z.any().refine((file) => {
@@ -53,7 +55,7 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
         </DrawerHeader>
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4 p-4 pb-0' >
           <Input
-            className="flex-1"
+            className="flex-1 "
             type="number"
             placeholder="Years of experience"
             {...register("experience",
@@ -72,6 +74,25 @@ function ApplyJobs({ user, job, fetchJobFun, applied = false }) {
 
           {errors.skills &&
             (<p className='text-red-500'>{errors.skills.message}</p>)}
+
+
+          <Input
+            className="flex-1"
+            type="text"
+            placeholder="E-mail Id"
+            {...register("email_id")}
+          />
+          {errors.email_id &&
+            (<p className='text-red-500'>{errors.email_id.message}</p>)}
+
+          <Input
+            className="flex-1"
+            type="number"
+            placeholder="Mobile Number"
+            {...register("mobile_number")}
+          />
+          {errors.mobile_number &&
+            (<p className='text-red-500'>{errors.mobile_number.message}</p>)}
 
           <Controller
             name='education'
