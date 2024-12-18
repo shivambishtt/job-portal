@@ -15,16 +15,13 @@ function JobListing() {
   const [searchQuery, setSearchQuery] = useState("")
   const [location, setLocation] = useState("")
   const [companyId, setCompanyId] = useState("")
-  const [jobExperience, setJobExperience] = useState("")
 
   const { fun: jobsFun, data: jobs, loading: jobsLoading } = useFetch(getJobs, {
     location,
     companyId,
-    jobExperience,
     searchQuery
   })
   const { fun: companyFun, data: companyData } = useFetch(fetchCompanies)
-
 
   const handleSearch = (event) => {
     event.preventDefault()
@@ -40,7 +37,6 @@ function JobListing() {
     setLocation("")
     setCompanyId("")
     setSearchQuery("")
-    setJobExperience("")
   }
 
 
@@ -56,7 +52,7 @@ function JobListing() {
     if (isLoaded) {
       jobsFun()
     }
-  }, [isLoaded, location, companyId, searchQuery, jobExperience])
+  }, [isLoaded, location, companyId, searchQuery])
 
 
   if (!isLoaded) {
@@ -110,21 +106,6 @@ function JobListing() {
           </SelectContent>
         </Select>
 
-        <Select value={jobExperience} onValueChange={(jobExperience) => setJobExperience(jobExperience)}>
-          <SelectTrigger>
-            <SelectValue placeholder="Experience" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {jobs?.map((job) => {
-                return <SelectItem key={job.id} value={job.jobExperience}>
-                  {job?.jobExperience}
-                </SelectItem>
-              })}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        
         <Button
           className="sm:w-1/2"
           onClick={handleClearFilters}

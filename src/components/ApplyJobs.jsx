@@ -11,7 +11,6 @@ import { applyForJob } from '@/api/applicationsAPI.js';
 import { BarLoader } from 'react-spinners';
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// dekh merko simply ek bat bolniu hai ki jo humara input h years of experience uski value jo hai === honi chahhiye humare jobExperience ke agar wo equal naihi hoti hai to hum daal denge you are not eligible
 const schema = z.object({
   experience: z.number().min(0, { message: "Experience must be atleast 0 " }).int(),
   skills: z.string().min(1, { message: "Skills are required" }),
