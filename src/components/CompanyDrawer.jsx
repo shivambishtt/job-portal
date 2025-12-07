@@ -35,6 +35,12 @@ function CompanyDrawer({ fetchCompanies }) {
         if (uploadCompanyData?.length > 0) {
             fetchCompanies()
         }
+<<<<<<< HEAD
+        else{
+            console.log("Company not uploaded")
+        }
+=======
+>>>>>>> a6932d823e34cfa243cc0deecfea79752ed516db
     }, [companyLoading])
 
     return (
@@ -48,7 +54,11 @@ function CompanyDrawer({ fetchCompanies }) {
                 <DrawerContent>
                     <DrawerHeader>
                         <DrawerTitle className="text-xl">Add a new company</DrawerTitle>
+<<<<<<< HEAD
+                        <DrawerDescription>This action cannot be undone.</DrawerDescription>
+=======
                         {/* <DrawerDescription>This action cannot be undone.</DrawerDescription> */}
+>>>>>>> a6932d823e34cfa243cc0deecfea79752ed516db
                     </DrawerHeader>
 
                     <form className='flex gap-2 p-4'>

@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { getJobs, updateHiringStatus } from "../api/jobsAPI.js"
 import useFetch from '@/hooks/useFetch.js'
+<<<<<<< HEAD
+import { useSession, useUser } from '@clerk/clerk-react'
+=======
 import { useUser } from '@clerk/clerk-react'
+>>>>>>> a6932d823e34cfa243cc0deecfea79752ed516db
 import { BarLoader } from 'react-spinners'
 import JobCard from '@/components/JobCard.jsx'
 import { fetchCompanies } from '@/api/companiesAPI.js'
 import { Input } from '@/components/ui/input.jsx'
 import { Button } from '@/components/ui/button.jsx'
+<<<<<<< HEAD
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx'
+=======
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select.jsx'
+>>>>>>> a6932d823e34cfa243cc0deecfea79752ed516db
 import { State } from 'country-state-city'
 
 function JobListing() {
