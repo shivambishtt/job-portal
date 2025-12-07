@@ -42,8 +42,13 @@ export async function updateApplicationStatus(
   const { data, error } = await supabase
     .from("applications")
     .update({ status })
+<<<<<<< HEAD
     .eq("job_id", job_id)
   .select();
+=======
+    .eq("job_id", job_id);
+  select();
+>>>>>>> a6932d823e34cfa243cc0deecfea79752ed516db
 
   if (error || data.length === 0) {
     console.log("Error occured while updating the application", error);
@@ -53,7 +58,10 @@ export async function updateApplicationStatus(
   return data;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> a6932d823e34cfa243cc0deecfea79752ed516db
 export async function getApplications(supabaseAccessToken, { user_id }) {
   const supabase = await supabaseClient(supabaseAccessToken);
 

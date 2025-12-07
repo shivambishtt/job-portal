@@ -4,8 +4,12 @@ export async function getJobs(
   supabaseAccessToken,
   { location, companyId, searchQuery }
 ) {
+<<<<<<< HEAD
     const supabase = await supabaseClient(supabaseAccessToken);
 
+=======
+  const supabase = await supabaseClient(supabaseAccessToken);
+>>>>>>> a6932d823e34cfa243cc0deecfea79752ed516db
 
   let query = supabase
     .from("jobs")
@@ -16,7 +20,11 @@ export async function getJobs(
     query = query.eq("jobLocation", location);
   }
   if (companyId) {
+<<<<<<< HEAD
     query = query.eq("company_id", companyId);
+=======
+    query = query.eq("companyId", companyId);
+>>>>>>> a6932d823e34cfa243cc0deecfea79752ed516db
   }
   if (searchQuery) {
     query = query.ilike("jobTitle", `%${searchQuery}%`);

@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -7,3 +8,12 @@
     "ignoreDeprecations": "6.0"
   }
 }
+=======
+    "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    } 
+}
+}
+>>>>>>> a6932d823e34cfa243cc0deecfea79752ed516db
